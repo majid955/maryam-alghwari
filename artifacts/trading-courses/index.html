@@ -62,7 +62,7 @@
   --font-serif:'Cormorant Garamond','Georgia',serif;
   --font-en:'Poppins',sans-serif;
   --max:520px;
-  --nav-h:56px;
+  --nav-h:80px;
 }
 html{scroll-behavior:smooth;font-size:16px}
 body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);direction:rtl;line-height:1.6;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
@@ -80,27 +80,35 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
 .view.active{display:block}
 
 /* ── Navbar ── */
-.navbar{position:fixed;top:0;right:0;left:0;z-index:100;height:var(--nav-h);background:rgba(250,248,244,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
-.navbar-inner{max-width:var(--max);margin:0 auto;padding:0 1.25rem;height:100%;display:flex;align-items:center;justify-content:space-between}
-.brand{text-align:right;line-height:1.2;cursor:pointer}
-.brand-en{display:block;font-family:var(--font-serif);font-size:.62rem;letter-spacing:.22em;color:var(--text-muted);text-transform:uppercase;font-weight:400}
-.brand-ar{display:block;font-family:var(--font-ar);font-size:1.1rem;font-weight:700;color:var(--text)}
-.menu-btn{background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:var(--radius-sm);transition:background .15s}
-.menu-btn:hover{background:var(--border)}
-.menu-btn span{display:block;width:20px;height:1.5px;background:var(--text);border-radius:2px;transition:all .25s}
-.menu-btn.open span:nth-child(1){transform:rotate(45deg) translate(4px,4.5px)}
-.menu-btn.open span:nth-child(2){opacity:0;transform:translateX(-6px)}
-.menu-btn.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4.5px)}
-
-/* ── Drawer ── */
-.drawer{position:fixed;top:var(--nav-h);right:0;left:0;z-index:99;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow);transform:translateY(-110%);transition:transform .28s cubic-bezier(.4,0,.2,1)}
-.drawer.open{transform:translateY(0)}
-.drawer-inner{max-width:var(--max);margin:0 auto;padding:1rem 1.25rem 1.25rem}
-.drawer-link{display:block;padding:.7rem .875rem;border-radius:var(--radius-sm);font-size:.9rem;font-weight:500;color:var(--text);cursor:pointer;transition:background .15s;text-decoration:none}
-.drawer-link:hover{background:var(--bg-alt)}
-.drawer-divider{height:1px;background:var(--border);margin:.5rem 0}
-.drawer-user{display:flex;align-items:center;justify-content:space-between;padding:.5rem .875rem}
-.drawer-user-name{font-size:.85rem;color:var(--text-muted)}
+.navbar{position:fixed;top:0;right:0;left:0;z-index:100;height:80px;background:rgba(253,250,246,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(196,169,107,.12);transition:height .3s ease,box-shadow .3s ease,background .3s ease}
+.navbar.scrolled{height:68px;box-shadow:0 4px 24px rgba(44,36,32,.08);background:rgba(253,250,246,.96)}
+.navbar-inner{max-width:900px;margin:0 auto;padding:0 1.5rem;height:100%;display:flex;align-items:center;justify-content:space-between;direction:ltr}
+.nav-logo{cursor:pointer;line-height:1.2;flex-shrink:0}
+.nav-logo-en{display:block;font-family:var(--font-serif);font-size:.6rem;letter-spacing:.22em;color:var(--text-muted);text-transform:uppercase;font-weight:400}
+.nav-logo-ar{display:block;font-family:var(--font-ar);font-size:1.1rem;font-weight:700;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:1.5rem}
+@media(max-width:900px){.nav-links{display:none}}
+.nav-link{font-family:var(--font-ar);font-size:.875rem;font-weight:500;color:var(--text-mid);text-decoration:none;transition:color .15s;white-space:nowrap}
+.nav-link:hover{color:var(--gold)}
+.nav-cta{background:var(--gold);color:#fff;border:none;padding:.55rem 1.25rem;border-radius:var(--radius-pill);font-family:var(--font-ar);font-size:.85rem;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(196,169,107,.35);transition:opacity .15s,transform .1s;white-space:nowrap}
+.nav-cta:hover{opacity:.9}
+.nav-cta:active{transform:scale(.97)}
+.hamburger{display:none;flex-direction:column;align-items:center;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;width:38px;height:38px;border-radius:var(--radius-sm);transition:background .15s;flex-shrink:0}
+@media(max-width:900px){.hamburger{display:flex}}
+.hamburger:hover{background:var(--nude)}
+.hamburger span{display:block;width:22px;height:1.5px;background:var(--text);border-radius:2px;transition:all .28s}
+/* ── Full-screen overlay ── */
+.nav-overlay{position:fixed;inset:0;z-index:200;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transform:translateY(-10px);transition:opacity .25s,transform .25s}
+.nav-overlay.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.overlay-close{position:absolute;top:1.25rem;left:1.5rem;background:var(--nude);border:none;border-radius:50%;width:40px;height:40px;font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-mid);transition:background .15s}
+.overlay-close:hover{background:var(--border)}
+.overlay-links{display:flex;flex-direction:column;align-items:center;gap:1.75rem;direction:rtl}
+.overlay-links a{font-family:var(--font-ar);font-size:1.5rem;font-weight:700;color:var(--text);cursor:pointer;text-decoration:none;transition:color .15s}
+.overlay-links a:hover{color:var(--gold)}
+.overlay-cta{font-family:var(--font-ar);font-size:1.05rem;font-weight:700;background:var(--gold);color:#fff;border:none;padding:.75rem 2.5rem;border-radius:var(--radius-pill);cursor:pointer;box-shadow:0 4px 20px rgba(196,169,107,.4);transition:opacity .15s}
+.overlay-cta:hover{opacity:.9}
+.overlay-divider{width:2.5rem;height:1px;background:var(--nude)}
+.overlay-auth{display:flex;flex-direction:column;align-items:center;gap:.75rem}
 
 /* ── Buttons ── */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.7rem 1.5rem;border-radius:var(--radius-pill);font-family:var(--font-ar);font-size:.875rem;font-weight:600;cursor:pointer;border:none;transition:opacity .15s,transform .1s;text-decoration:none}
@@ -277,27 +285,38 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
 <body>
 
 <!-- ── Navbar ── -->
-<nav class="navbar">
+<nav class="navbar" id="navbar">
   <div class="navbar-inner">
-    <button class="menu-btn" id="menuBtn" aria-label="القائمة" onclick="toggleDrawer()">
+    <div class="nav-logo" onclick="navigate('home')">
+      <span class="nav-logo-en">C. Maryam Alghwari</span>
+      <span class="nav-logo-ar">مريم الجهوري</span>
+    </div>
+    <div class="nav-links">
+      <a class="nav-link" href="#about">عن مريم</a>
+      <a class="nav-link" href="#services">الخدمات</a>
+      <a class="nav-link" href="#why">لماذا أنا</a>
+      <a class="nav-link" href="#testimonials">آراء الطلاب</a>
+      <a class="nav-link" href="#private-services">الخدمات الخاصة</a>
+      <button class="nav-cta" onclick="scrollToId('bookingSection')">احجز استشارة</button>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="القائمة" onclick="toggleOverlay()">
       <span></span><span></span><span></span>
     </button>
-    <div class="brand" onclick="navigate('home')">
-      <span class="brand-en">C. Maryam Alghwari</span>
-      <span class="brand-ar">مريم الجهوري</span>
-    </div>
   </div>
 </nav>
 
-<!-- ── Drawer ── -->
-<div class="drawer" id="drawer">
-  <div class="drawer-inner">
-    <div style="display:flex;flex-direction:column;gap:.25rem">
-      <span class="drawer-link" onclick="navigate('home');closeDrawer()">الرئيسية</span>
-      <span class="drawer-link" onclick="navigate('courses');closeDrawer()">الكورسات</span>
-      <div class="drawer-divider"></div>
-      <div id="drawerAuth"></div>
-    </div>
+<!-- ── Full-screen overlay ── -->
+<div class="nav-overlay" id="navOverlay">
+  <button class="overlay-close" onclick="closeOverlay()">✕</button>
+  <div class="overlay-links">
+    <a onclick="closeOverlay()">عن مريم</a>
+    <a onclick="closeOverlay();navigate('courses')">الكورسات</a>
+    <a onclick="closeOverlay()">لماذا أنا</a>
+    <a onclick="closeOverlay()">آراء الطلاب</a>
+    <a onclick="closeOverlay()">الخدمات الخاصة</a>
+    <div class="overlay-divider"></div>
+    <button class="overlay-cta" onclick="closeOverlay();scrollToId('bookingSection')">احجز استشارة</button>
+    <div class="overlay-auth" id="drawerAuth"></div>
   </div>
 </div>
 
@@ -577,29 +596,38 @@ function toast(msg, type='') {
   setTimeout(() => {el.classList.add('out'); setTimeout(() => el.remove(), 250);}, 3000);
 }
 
-/* ── Drawer ── */
-function toggleDrawer() {
-  document.getElementById('drawer').classList.toggle('open');
-  document.getElementById('menuBtn').classList.toggle('open');
+/* ── Overlay nav ── */
+function toggleOverlay() {
+  document.getElementById('navOverlay').classList.toggle('open');
 }
-function closeDrawer() {
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('menuBtn').classList.remove('open');
+function closeOverlay() {
+  document.getElementById('navOverlay').classList.remove('open');
 }
-document.addEventListener('click', e => {
-  if (!e.target.closest('.drawer') && !e.target.closest('.menu-btn')) closeDrawer();
-});
+function closeDrawer() { closeOverlay(); }
+
+/* ── Navbar scroll shrink ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+}, {passive:true});
+
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({behavior:'smooth'});
+  else navigate('home', null, () => setTimeout(() => scrollToId(id), 120));
+}
 
 function renderDrawerAuth() {
   const el = document.getElementById('drawerAuth');
+  if (!el) return;
   if (S.user) {
-    el.innerHTML = (S.user.role === 'admin' ? `<span class="drawer-link" onclick="navigate('admin');closeDrawer()">⚙️ لوحة التحكم</span>` : '')
-      + `<span class="drawer-link" onclick="navigate('dashboard');closeDrawer()">📋 حجوزاتي</span>`
-      + `<div class="drawer-divider"></div>`
-      + `<div class="drawer-user"><span class="drawer-user-name">${S.user.name}</span><button class="btn btn-ghost btn-sm" onclick="handleLogout()">خروج</button></div>`;
+    el.innerHTML = `<div class="overlay-divider"></div>`
+      + (S.user.role === 'admin' ? `<a onclick="closeOverlay();navigate('admin')">⚙️ لوحة التحكم</a>` : '')
+      + `<a onclick="closeOverlay();navigate('dashboard')">📋 حجوزاتي</a>`
+      + `<div style="display:flex;align-items:center;gap:.75rem;font-size:.85rem;color:var(--text-muted)"><span>${S.user.name}</span><button class="btn btn-ghost btn-sm" onclick="handleLogout()">خروج</button></div>`;
   } else {
-    el.innerHTML = `<button class="btn btn-outline btn-sm" style="margin:.25rem .875rem;display:block" onclick="openModal('loginModal');closeDrawer()">تسجيل الدخول</button>`
-      + `<button class="btn btn-primary btn-sm" style="margin:.25rem .875rem;display:block" onclick="openModal('registerModal');closeDrawer()">إنشاء حساب</button>`;
+    el.innerHTML = `<div class="overlay-divider"></div>`
+      + `<button class="btn btn-outline btn-sm" onclick="openModal('loginModal');closeOverlay()">تسجيل الدخول</button>`
+      + `<button class="btn btn-primary btn-sm" onclick="openModal('registerModal');closeOverlay()">إنشاء حساب</button>`;
   }
 }
 
