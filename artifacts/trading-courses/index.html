@@ -385,6 +385,103 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
 .insta-cta{display:inline-flex;align-items:center;gap:.6rem;background:transparent;border:1.5px solid var(--gold);color:var(--gold-dk);font-family:var(--font-ar);font-size:.95rem;font-weight:700;padding:.75rem 2rem;border-radius:var(--radius-pill);cursor:pointer;transition:background .2s,color .2s,box-shadow .2s;direction:rtl}
 .insta-cta:hover{background:var(--gold);color:#fff;box-shadow:0 6px 20px rgba(196,169,107,.35)}
 
+/* ── Private Services (Exclusive) ───────────────────────────── */
+.ps-section{background:linear-gradient(160deg,var(--beige) 0%,var(--warm-white) 55%,var(--nude) 100%);padding:100px 5%;position:relative;overflow:hidden}
+.ps-bg-orb{position:absolute;border-radius:50%;pointer-events:none;filter:blur(80px);z-index:0}
+.ps-orb-1{width:500px;height:500px;background:rgba(196,169,107,.1);top:-80px;right:-80px}
+.ps-orb-2{width:400px;height:400px;background:rgba(212,165,165,.08);bottom:-80px;left:-80px}
+.ps-header{text-align:center;max-width:520px;margin:0 auto 52px;position:relative;z-index:1;direction:rtl}
+.ps-title{font-family:var(--font-ar);font-size:2.2rem;font-weight:900;color:var(--text);line-height:1.2;margin:.35rem 0 .75rem}
+.ps-line{width:60px;height:2px;background:linear-gradient(to left,var(--rose),var(--gold));border-radius:2px;margin:.75rem auto 1.1rem}
+.ps-desc{font-size:.9rem;color:var(--text-muted);line-height:1.8}
+.ps-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;max-width:800px;margin:0 auto;position:relative;z-index:1}
+@media(max-width:640px){.ps-grid{grid-template-columns:1fr}}
+.ps-card{position:relative;background:rgba(255,255,255,.75);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(196,169,107,.2);border-radius:24px;padding:40px 36px;text-align:center;cursor:pointer;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s}
+.ps-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(to right,var(--gold),var(--rose));transform:scaleX(0);transition:transform .3s ease}
+.ps-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(196,169,107,.18),0 8px 24px rgba(44,36,32,.06);border-color:rgba(196,169,107,.35)}
+.ps-card:hover::after{transform:scaleX(1)}
+.ps-card-arrow{position:absolute;top:16px;left:16px;font-size:1.1rem;color:var(--gold);opacity:.5;transition:transform .25s,opacity .25s}
+.ps-card:hover .ps-card-arrow{transform:rotate(45deg);opacity:1}
+.ps-card-icon{font-size:3rem;margin-bottom:1.1rem;display:block}
+.ps-card-title{font-family:var(--font-ar);font-size:1.25rem;font-weight:800;color:var(--text);margin-bottom:.6rem}
+.ps-card-desc{font-size:.875rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.5rem;direction:rtl}
+.ps-card-cta{display:inline-flex;align-items:center;gap:.4rem;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none;border-radius:var(--radius-pill);padding:.65rem 1.5rem;font-family:var(--font-ar);font-size:.875rem;font-weight:700;cursor:pointer;transition:opacity .15s,transform .1s}
+.ps-card-cta:hover{opacity:.9;transform:scale(.98)}
+/* Modals */
+.ps-modal{position:fixed;inset:0;z-index:500;background:rgba(44,36,32,.55);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .28s}
+.ps-modal.open{opacity:1;pointer-events:all}
+.ps-modal-box{background:#fff;border-radius:28px;box-shadow:0 40px 100px rgba(44,36,32,.22);max-width:880px;width:100%;max-height:90vh;overflow-y:auto;transform:translateY(40px) scale(.97);opacity:0;transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .28s}
+.ps-modal.open .ps-modal-box{transform:translateY(0) scale(1);opacity:1}
+.ps-modal-head{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);padding:22px 32px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--nude);z-index:2;direction:rtl}
+.ps-modal-head-info{display:flex;align-items:center;gap:14px}
+.ps-modal-head-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--gold-pale),rgba(212,165,165,.3));display:flex;align-items:center;justify-content:center;font-size:1.4rem}
+.ps-modal-head-title{font-family:var(--font-ar);font-size:1.05rem;font-weight:800;color:var(--text)}
+.ps-modal-head-sub{font-size:.75rem;color:var(--text-muted);margin-top:2px}
+.ps-modal-close{width:38px;height:38px;border-radius:50%;background:var(--nude);border:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--text-mid);transition:background .15s,color .15s,transform .2s;flex-shrink:0}
+.ps-modal-close:hover{background:var(--rose-light);color:var(--rose-deep);transform:rotate(90deg)}
+.ps-modal-body{padding:28px 32px;direction:rtl}
+@media(max-width:600px){.ps-modal-body{padding:18px 16px}.ps-modal-head{padding:16px}}
+.fund-intro{background:linear-gradient(135deg,rgba(196,169,107,.08),rgba(212,165,165,.05));border:1px solid rgba(196,169,107,.25);border-radius:12px;padding:14px 18px;margin-bottom:.875rem;font-size:.85rem;color:var(--text-mid);line-height:1.7}
+.fund-notice{background:rgba(220,180,160,.07);border-radius:12px;border-right:4px solid var(--rose-deep);padding:14px 18px;margin-bottom:2rem;font-size:.85rem;color:var(--text-mid);line-height:1.75}
+.fund-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:640px){.fund-grid{grid-template-columns:1fr}}
+.fund-card{background:#fff;border:1px solid rgba(196,169,107,.2);border-radius:18px;padding:24px 18px;text-align:center;position:relative;overflow:hidden;transition:transform .22s,box-shadow .22s}
+.fund-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(to right,var(--gold),var(--rose))}
+.fund-card:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(196,169,107,.14)}
+.fund-card.featured{background:linear-gradient(160deg,rgba(196,169,107,.04),rgba(212,165,165,.04))}
+.fund-featured-badge{position:absolute;top:14px;right:14px;background:var(--gold-pale);color:var(--gold-dk);border:1px solid rgba(196,169,107,.3);border-radius:var(--radius-pill);padding:.14rem .55rem;font-size:.63rem;font-weight:700;font-family:var(--font-ar)}
+.fund-num{font-family:var(--font-serif);font-size:.72rem;font-weight:600;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.2rem}
+.fund-name{font-family:var(--font-ar);font-size:.95rem;font-weight:800;color:var(--text);margin-bottom:.875rem}
+.fund-stats{display:flex;flex-direction:column;gap:.45rem;margin-bottom:1.1rem}
+.fund-stat-row{display:flex;align-items:center;justify-content:space-between;background:var(--beige);border-radius:7px;padding:.4rem .7rem}
+.fund-stat-label{font-size:.72rem;color:var(--text-muted);font-family:var(--font-ar)}
+.fund-stat-val{font-size:.82rem;font-weight:700;color:var(--text);font-family:var(--font-ar)}
+.fund-stat-val.gval{background:linear-gradient(135deg,var(--gold),var(--rose-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.fund-btn{display:block;width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none;border-radius:var(--radius-pill);padding:.6rem 1rem;font-family:var(--font-ar);font-size:.85rem;font-weight:700;cursor:pointer;text-decoration:none;text-align:center;transition:opacity .15s,transform .1s}
+.fund-btn:hover{opacity:.9;transform:scale(.98)}
+/* Course modal */
+.course-hero{text-align:center;margin-bottom:2rem}
+.course-hero-icon{width:88px;height:88px;border-radius:22px;background:linear-gradient(135deg,var(--gold-pale),rgba(212,165,165,.3));display:flex;align-items:center;justify-content:center;font-size:2.6rem;margin:0 auto 1rem;box-shadow:0 12px 32px rgba(196,169,107,.2)}
+.course-hero-title{font-family:var(--font-ar);font-size:1.35rem;font-weight:800;color:var(--text);margin-bottom:.5rem}
+.course-hero-desc{font-size:.875rem;color:var(--text-muted);line-height:1.75;max-width:400px;margin:0 auto;direction:rtl}
+.course-feats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:2rem}
+@media(max-width:480px){.course-feats{grid-template-columns:1fr}}
+.course-feat{display:flex;align-items:center;gap:.7rem;background:var(--beige);border:1px solid rgba(196,169,107,.12);border-radius:12px;padding:.8rem .95rem;direction:rtl;transition:background .15s,border-color .15s}
+.course-feat:hover{background:#fff;border-color:rgba(196,169,107,.32)}
+.course-feat-emoji{font-size:1.15rem;flex-shrink:0}
+.course-feat-text{font-family:var(--font-ar);font-size:.83rem;font-weight:600;color:var(--text)}
+.course-cta-sec{text-align:center}
+.course-cta-note{font-size:.78rem;color:var(--rose-deep);font-family:var(--font-ar);margin-bottom:.875rem}
+.course-cta-btn{display:inline-flex;align-items:center;gap:.5rem;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none;border-radius:var(--radius-pill);padding:.875rem 2.5rem;font-family:var(--font-ar);font-size:.95rem;font-weight:700;cursor:pointer;text-decoration:none;box-shadow:0 8px 24px rgba(196,169,107,.3);transition:opacity .15s,transform .1s}
+.course-cta-btn:hover{opacity:.9;transform:scale(.98)}
+/* ── Booking / Contact Section ───────────────────────────────── */
+.contact-section{background:linear-gradient(160deg,var(--warm-white) 0%,var(--beige) 100%);padding:100px 5%}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;max-width:1000px;margin:0 auto;align-items:start}
+@media(max-width:780px){.contact-grid{grid-template-columns:1fr;gap:40px}}
+.contact-info-hd{direction:rtl;margin-bottom:2.5rem}
+.contact-info-title{font-family:var(--font-ar);font-size:2rem;font-weight:900;color:var(--text);line-height:1.2;margin:.35rem 0 .75rem}
+.contact-info-hline{width:60px;height:2px;background:linear-gradient(to left,var(--rose),var(--gold));border-radius:2px;margin-bottom:1.1rem}
+.contact-info-sub{font-size:.9rem;color:var(--text-muted);line-height:1.8}
+.contact-items-list{display:flex;flex-direction:column;direction:rtl}
+.contact-ci{display:flex;align-items:center;gap:1rem;padding:1.1rem 0;border-bottom:1px solid var(--nude)}
+.contact-ci:last-child{border-bottom:none}
+.contact-ci-icon{width:44px;height:44px;min-width:44px;border-radius:12px;background:linear-gradient(135deg,var(--gold-pale),rgba(212,165,165,.25));display:flex;align-items:center;justify-content:center;font-size:1.15rem}
+.contact-ci-label{font-size:.7rem;color:var(--text-muted);font-family:var(--font-en);letter-spacing:.05em;text-transform:uppercase;margin-bottom:.1rem}
+.contact-ci-value{font-family:var(--font-en);font-size:.9rem;font-weight:600;color:var(--text)}
+.contact-form-card{background:#fff;border:1px solid rgba(196,169,107,.22);border-radius:28px;padding:44px;box-shadow:0 24px 64px rgba(44,36,32,.1),0 6px 20px rgba(44,36,32,.04)}
+@media(max-width:500px){.contact-form-card{padding:24px 18px;border-radius:20px}}
+.cform-title{font-family:var(--font-ar);font-size:1.3rem;font-weight:800;color:var(--text);margin-bottom:1.75rem;direction:rtl}
+.cform-stack{display:flex;flex-direction:column;gap:.875rem}
+.cform-inp,.cform-sel,.cform-txta{width:100%;background:var(--beige);border:1.5px solid transparent;border-radius:12px;padding:13px 18px;font-family:var(--font-ar);font-size:.9rem;color:var(--text);outline:none;transition:border-color .2s,background .2s,box-shadow .2s;direction:rtl;-webkit-appearance:none;appearance:none;box-sizing:border-box}
+.cform-inp:focus,.cform-sel:focus,.cform-txta:focus{border-color:var(--gold);background:#fff;box-shadow:0 0 0 4px rgba(196,169,107,.12)}
+.cform-inp::placeholder,.cform-txta::placeholder{color:var(--text-muted)}
+.cform-txta{resize:none;height:120px}
+.cform-sel{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7E72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left .85rem center;background-color:var(--beige);padding-left:2.5rem}
+.cform-sub{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-light));color:#fff;border:none;border-radius:var(--radius-pill);padding:16px 2rem;font-family:var(--font-ar);font-size:1rem;font-weight:700;cursor:pointer;transition:opacity .2s,transform .2s,box-shadow .2s;margin-top:.25rem}
+.cform-sub:hover{opacity:.92;transform:translateY(-2px);box-shadow:0 10px 28px rgba(196,169,107,.4)}
+.cform-sub:active{transform:scale(.98)}
+.cform-sub.success{background:linear-gradient(135deg,#4a8a4a,#6aaa6a)}
+
 /* ── Utils ── */
 .text-gold{color:var(--gold)}
 .text-muted{color:var(--text-muted)}
@@ -794,6 +891,172 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
     </div>
   </section>
 
+  <!-- ══ Private Services (Exclusive) ══ -->
+  <section class="ps-section" id="private-services">
+    <div class="ps-bg-orb ps-orb-1"></div>
+    <div class="ps-bg-orb ps-orb-2"></div>
+    <div class="ps-header">
+      <p class="section-label">Exclusive</p>
+      <h2 class="ps-title">الخدمات الخاصة</h2>
+      <div class="ps-line"></div>
+      <p class="ps-desc">خدمات حصرية مصممة لمن يريد الانتقال إلى مستوى أعلى في رحلته المالية والاستثمارية</p>
+    </div>
+    <div class="ps-grid">
+      <div class="ps-card" onclick="document.getElementById('fundsModal').classList.add('open')">
+        <span class="ps-card-arrow">↗</span>
+        <span class="ps-card-icon">💰</span>
+        <div class="ps-card-title">الصناديق الاستثمارية</div>
+        <p class="ps-card-desc">صناديق استثمارية مدارة باحترافية بعوائد شهرية منتظمة وشفافية كاملة ورقابة مستمرة على محفظتك</p>
+        <button class="ps-card-cta">✦ اكتشف الصناديق</button>
+      </div>
+      <div class="ps-card" onclick="document.getElementById('coursesModal').classList.add('open')">
+        <span class="ps-card-arrow">↗</span>
+        <span class="ps-card-icon">🎓</span>
+        <div class="ps-card-title">الكورسات والتسجيل</div>
+        <p class="ps-card-desc">برامج تعليمية متخصصة في التداول والاستثمار من الأسس حتى الاحترافية بإشراف مباشر وشخصي</p>
+        <button class="ps-card-cta">✦ سجّل الآن</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ Modal: Investment Funds ══ -->
+  <div class="ps-modal" id="fundsModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="ps-modal-box">
+      <div class="ps-modal-head">
+        <div class="ps-modal-head-info">
+          <div class="ps-modal-head-icon">💰</div>
+          <div>
+            <div class="ps-modal-head-title">الصناديق الاستثمارية</div>
+            <div class="ps-modal-head-sub">عوائد شهرية منتظمة بإدارة احترافية</div>
+          </div>
+        </div>
+        <button class="ps-modal-close" onclick="document.getElementById('fundsModal').classList.remove('open')">✕</button>
+      </div>
+      <div class="ps-modal-body">
+        <div class="fund-intro">✨ رسوم الأداء <strong>1٪ فقط</strong> — ويتم خصمها فقط عند انتهاء مدة الصندوق</div>
+        <div class="fund-notice">ℹ️ يمكنك سحب الأرباح خلال فترة الاستثمار، أما في حال سحب رأس المال قبل انتهاء مدة الصندوق يتم خصم 10٪ من رأس المال</div>
+        <div class="fund-grid">
+          <div class="fund-card">
+            <div class="fund-num">Fund 01</div>
+            <div class="fund-name">الصندوق الأول</div>
+            <div class="fund-stats">
+              <div class="fund-stat-row"><span class="fund-stat-label">الحد الأدنى</span><span class="fund-stat-val">1,000$</span></div>
+              <div class="fund-stat-row"><span class="fund-stat-label">العائد الشهري</span><span class="fund-stat-val gval">2٪ – 3٪</span></div>
+              <div class="fund-stat-row"><span class="fund-stat-label">المدة</span><span class="fund-stat-val">3 أشهر</span></div>
+            </div>
+            <a class="fund-btn" href="https://crm.fiper.me/registration-live?ref_id=1041328" target="_blank">ابدأ الآن</a>
+          </div>
+          <div class="fund-card featured">
+            <span class="fund-featured-badge">الأكثر طلباً</span>
+            <div class="fund-num">Fund 02</div>
+            <div class="fund-name">الصندوق الثاني</div>
+            <div class="fund-stats">
+              <div class="fund-stat-row"><span class="fund-stat-label">الحد الأدنى</span><span class="fund-stat-val">5,000$</span></div>
+              <div class="fund-stat-row"><span class="fund-stat-label">العائد الشهري</span><span class="fund-stat-val gval">3٪ – 4٪</span></div>
+              <div class="fund-stat-row"><span class="fund-stat-label">المدة</span><span class="fund-stat-val">12 شهر</span></div>
+            </div>
+            <a class="fund-btn" href="https://crm.fiper.me/registration-live?ref_id=1041328" target="_blank">استثمر الآن</a>
+          </div>
+          <div class="fund-card">
+            <div class="fund-num">Fund 03</div>
+            <div class="fund-name">الصندوق الثالث</div>
+            <div class="fund-stats">
+              <div class="fund-stat-row"><span class="fund-stat-label">الحد الأدنى</span><span class="fund-stat-val">50,000$</span></div>
+              <div class="fund-stat-row"><span class="fund-stat-label">العائد الشهري</span><span class="fund-stat-val gval">4٪ – 5٪</span></div>
+              <div class="fund-stat-row"><span class="fund-stat-label">المدة</span><span class="fund-stat-val">24 شهر</span></div>
+            </div>
+            <a class="fund-btn" href="https://crm.fiper.me/registration-live?ref_id=1041328" target="_blank">ابدأ استثمارك</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Modal: Courses ══ -->
+  <div class="ps-modal" id="coursesModal" onclick="if(event.target===this)this.classList.remove('open')">
+    <div class="ps-modal-box">
+      <div class="ps-modal-head">
+        <div class="ps-modal-head-info">
+          <div class="ps-modal-head-icon">🎓</div>
+          <div>
+            <div class="ps-modal-head-title">الكورسات والتسجيل</div>
+            <div class="ps-modal-head-sub">برنامج تداول احترافي متكامل</div>
+          </div>
+        </div>
+        <button class="ps-modal-close" onclick="document.getElementById('coursesModal').classList.remove('open')">✕</button>
+      </div>
+      <div class="ps-modal-body">
+        <div class="course-hero">
+          <div class="course-hero-icon">📚</div>
+          <h3 class="course-hero-title">ابدأ رحلتك التعليمية</h3>
+          <p class="course-hero-desc">يرجى تسجيل البيانات لاستكمال عملية التسجيل والانضمام إلى برنامج التداول الاحترافي</p>
+        </div>
+        <div class="course-feats">
+          <div class="course-feat"><span class="course-feat-emoji">📊</span><span class="course-feat-text">أساسيات التداول من الصفر</span></div>
+          <div class="course-feat"><span class="course-feat-emoji">🔍</span><span class="course-feat-text">التحليل الفني والأساسي</span></div>
+          <div class="course-feat"><span class="course-feat-emoji">🛡️</span><span class="course-feat-text">إدارة رأس المال والمخاطر</span></div>
+          <div class="course-feat"><span class="course-feat-emoji">⚡</span><span class="course-feat-text">استراتيجيات التداول الحية</span></div>
+          <div class="course-feat"><span class="course-feat-emoji">🤝</span><span class="course-feat-text">دعم ومتابعة شخصية</span></div>
+          <div class="course-feat"><span class="course-feat-emoji">🌿</span><span class="course-feat-text">بناء عقلية مالية صحيحة</span></div>
+        </div>
+        <div class="course-cta-sec">
+          <p class="course-cta-note">⚡ أماكن محدودة — سارعي بالتسجيل الآن</p>
+          <a class="course-cta-btn" href="https://forms.gle/WUQXicocSt44pxRQ6" target="_blank">✦ التسجيل والدفع</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ Booking / Contact Section ══ -->
+  <section class="contact-section" id="bookingSection">
+    <div class="contact-grid">
+      <div>
+        <div class="contact-info-hd">
+          <p class="section-label">Booking</p>
+          <h2 class="contact-info-title">احجزي استشارتك الآن</h2>
+          <div class="contact-info-hline"></div>
+          <p class="contact-info-sub">تواصلي معي عبر أي من قنوات التواصل أو أرسلي طلبك مباشرةً وسأرد عليك في أقرب وقت ممكن</p>
+        </div>
+        <div class="contact-items-list">
+          <div class="contact-ci">
+            <div class="contact-ci-icon">📸</div>
+            <div><div class="contact-ci-label">Instagram</div><div class="contact-ci-value">@cmaryam.alghwari</div></div>
+          </div>
+          <div class="contact-ci">
+            <div class="contact-ci-icon">💬</div>
+            <div><div class="contact-ci-label">WhatsApp</div><div class="contact-ci-value">+966 5X XXX XXXX</div></div>
+          </div>
+          <div class="contact-ci">
+            <div class="contact-ci-icon">✈️</div>
+            <div><div class="contact-ci-label">Telegram</div><div class="contact-ci-value">@cmaryam_alghwari</div></div>
+          </div>
+          <div class="contact-ci">
+            <div class="contact-ci-icon">✉️</div>
+            <div><div class="contact-ci-label">Email</div><div class="contact-ci-value">hello@maryamalghwari.com</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-card">
+        <div class="cform-title">أرسلي طلبك</div>
+        <div class="cform-stack">
+          <input class="cform-inp" type="text" id="cName" placeholder="الاسم الكامل" required>
+          <input class="cform-inp" type="tel" id="cPhone" placeholder="+966 5X XXX XXXX" dir="ltr" style="text-align:right" required>
+          <select class="cform-sel" id="cService" required>
+            <option value="" disabled selected>اختاري الخدمة المناسبة</option>
+            <option value="fund-1">الصندوق الاستثماري الأول (1,000$)</option>
+            <option value="fund-2">الصندوق الاستثماري الثاني (5,000$)</option>
+            <option value="fund-3">الصندوق الاستثماري الثالث (50,000$)</option>
+            <option value="courses">الكورسات والتسجيل</option>
+            <option value="consulting">الاستشارة الخاصة</option>
+            <option value="other">أخرى</option>
+          </select>
+          <textarea class="cform-txta" id="cMessage" placeholder="أخبريني عن هدفك المالي وكيف يمكنني مساعدتك..."></textarea>
+          <button class="cform-sub" id="cSubmitBtn" onclick="handleContactForm()">✦ احجزي الآن</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <div class="container">
 
     <!-- Featured courses -->
@@ -808,31 +1071,6 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
       </div>
     </div>
 
-    <!-- Request form -->
-    <div class="section-gap" id="bookingSection">
-      <div class="card card-pad">
-        <h2 class="section-title text-center" style="font-size:1.5rem;margin-bottom:1.5rem">أرسلي طلبك</h2>
-        <div id="requestSuccess" class="hidden text-center" style="padding:2rem 0">
-          <div style="font-size:2.5rem;margin-bottom:.75rem">✅</div>
-          <p class="font-bold" style="font-size:1.05rem;margin-bottom:.3rem">تم إرسال طلبك بنجاح</p>
-          <p class="text-muted" style="font-size:.85rem">سنتواصل معك في أقرب وقت.</p>
-        </div>
-        <form class="form-stack" id="requestForm" onsubmit="handleRequest(event)">
-          <div class="form-group"><label class="form-label">الاسم الكامل</label><input class="form-input" id="reqName" placeholder="اكتبي اسمك هنا" required></div>
-          <div class="form-group"><label class="form-label">رقم الهاتف</label><input class="form-input" type="tel" id="reqPhone" placeholder="+966 5X XXX XXXX" required></div>
-          <div class="form-group"><label class="form-label">نوع الخدمة</label>
-            <select class="form-select" id="reqService" required>
-              <option value="" disabled selected>اختاري الخدمة المناسبة</option>
-              <option value="investment">الصناديق الاستثمارية</option>
-              <option value="courses">الكورسات والتسجيل</option>
-              <option value="consulting">الاستشارة الخاصة</option>
-            </select>
-          </div>
-          <div class="form-group"><label class="form-label">رسالتك</label><textarea class="form-textarea" id="reqMessage" rows="4" placeholder="أخبريني عن هدفك المالي وكيف يمكنني مساعدتك..." required></textarea></div>
-          <button type="submit" class="btn btn-primary btn-full">✦ احجزي الآن</button>
-        </form>
-      </div>
-    </div>
     <div class="footer"><p class="footer-text">© <span id="yr1"></span> مريم الجهوري · جميع الحقوق محفوظة</p></div>
   </div>
 </div>
@@ -1202,7 +1440,7 @@ async function cancelBooking(id) {
   catch {toast('تعذّر الإلغاء','error');}
 }
 
-/* ── Request form ── */
+/* ── Request form (legacy) ── */
 function handleRequest(e) {
   e.preventDefault();
   document.getElementById('requestForm').classList.add('hidden');
@@ -1213,6 +1451,28 @@ function scrollToForm() {
   navigate('home');
   setTimeout(() => document.getElementById('bookingSection').scrollIntoView({behavior:'smooth'}), 100);
 }
+/* ── Contact form ── */
+function handleContactForm() {
+  const btn = document.getElementById('cSubmitBtn');
+  const name = document.getElementById('cName').value.trim();
+  const phone = document.getElementById('cPhone').value.trim();
+  const service = document.getElementById('cService').value;
+  if (!name || !phone || !service) { toast('يرجى تعبئة جميع الحقول المطلوبة','error'); return; }
+  btn.textContent = '✓ تم الإرسال بنجاح!';
+  btn.classList.add('success');
+  btn.disabled = true;
+  setTimeout(() => {
+    btn.textContent = '✦ احجزي الآن';
+    btn.classList.remove('success');
+    btn.disabled = false;
+    ['cName','cPhone','cMessage'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('cService').selectedIndex = 0;
+  }, 3000);
+}
+/* ESC closes modals */
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.querySelectorAll('.ps-modal.open').forEach(m => m.classList.remove('open'));
+});
 
 /* ── Admin ── */
 function adminTab(btn, id) {
