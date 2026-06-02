@@ -1,20 +1,957 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>مريم الجهوري | خدمات مالية وكورسات تداول</title>
-    <meta name="description" content="مريم الجهوري — خدمات مالية حصرية وبرامج تعليمية متخصصة في التداول والاستثمار" />
-    <meta name="robots" content="index, follow" />
-    <meta property="og:title" content="مريم الجهوري" />
-    <meta property="og:description" content="خدمات مالية حصرية وبرامج تعليمية متخصصة في التداول والاستثمار" />
-    <meta property="og:type" content="website" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>مريم الجهوري | خدمات مالية وكورسات تداول</title>
+<meta name="description" content="خدمات مالية حصرية وبرامج تعليمية متخصصة في التداول والاستثمار">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ── Reset & Variables ─────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --bg:#FAF8F4;
+  --bg-alt:#F4F0E8;
+  --card:#FFFFFF;
+  --border:#EDE6DA;
+  --text:#1C1510;
+  --text-muted:#8C7E72;
+  --gold:#B8963E;
+  --gold-dk:#9A7C2E;
+  --gold-bg:#FBF5E8;
+  --green:#2D7A5F;
+  --green-bg:#EAF5EF;
+  --red:#C0392B;
+  --red-bg:#FDECEA;
+  --amber-bg:#FEF9EC;
+  --amber:#A07820;
+  --radius-sm:.5rem;
+  --radius:.875rem;
+  --radius-lg:1.25rem;
+  --radius-pill:99px;
+  --shadow-sm:0 1px 4px rgba(0,0,0,.06);
+  --shadow:0 2px 12px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 32px rgba(0,0,0,.10);
+  --font-ar:'Cairo','Arial',sans-serif;
+  --font-serif:'Cormorant Garamond','Georgia',serif;
+  --font-en:'Poppins',sans-serif;
+  --max:520px;
+  --nav-h:56px;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-ar);background:var(--bg);color:var(--text);line-height:1.6;min-height:100dvh;-webkit-font-smoothing:antialiased}
+
+/* ── Layout ── */
+.container{max-width:var(--max);margin:0 auto;padding:0 1.25rem}
+.view{display:none;padding-top:var(--nav-h)}
+.view.active{display:block}
+
+/* ── Navbar ── */
+.navbar{position:fixed;top:0;right:0;left:0;z-index:100;height:var(--nav-h);background:rgba(250,248,244,.96);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.navbar-inner{max-width:var(--max);margin:0 auto;padding:0 1.25rem;height:100%;display:flex;align-items:center;justify-content:space-between}
+.brand{text-align:right;line-height:1.2;cursor:pointer}
+.brand-en{display:block;font-family:var(--font-en);font-size:.62rem;letter-spacing:.18em;color:var(--text-muted);text-transform:uppercase}
+.brand-ar{display:block;font-family:var(--font-ar);font-size:1.1rem;font-weight:700;color:var(--text)}
+.menu-btn{background:none;border:none;cursor:pointer;width:36px;height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;border-radius:var(--radius-sm);transition:background .15s}
+.menu-btn:hover{background:var(--border)}
+.menu-btn span{display:block;width:20px;height:1.5px;background:var(--text);border-radius:2px;transition:all .25s}
+.menu-btn.open span:nth-child(1){transform:rotate(45deg) translate(4px,4.5px)}
+.menu-btn.open span:nth-child(2){opacity:0;transform:translateX(-6px)}
+.menu-btn.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4.5px)}
+
+/* ── Drawer ── */
+.drawer{position:fixed;top:var(--nav-h);right:0;left:0;z-index:99;background:var(--card);border-bottom:1px solid var(--border);box-shadow:var(--shadow);transform:translateY(-110%);transition:transform .28s cubic-bezier(.4,0,.2,1)}
+.drawer.open{transform:translateY(0)}
+.drawer-inner{max-width:var(--max);margin:0 auto;padding:1rem 1.25rem 1.25rem}
+.drawer-link{display:block;padding:.7rem .875rem;border-radius:var(--radius-sm);font-size:.9rem;font-weight:500;color:var(--text);cursor:pointer;transition:background .15s;text-decoration:none}
+.drawer-link:hover{background:var(--bg-alt)}
+.drawer-divider{height:1px;background:var(--border);margin:.5rem 0}
+.drawer-user{display:flex;align-items:center;justify-content:space-between;padding:.5rem .875rem}
+.drawer-user-name{font-size:.85rem;color:var(--text-muted)}
+
+/* ── Buttons ── */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.7rem 1.5rem;border-radius:var(--radius-pill);font-family:var(--font-ar);font-size:.875rem;font-weight:600;cursor:pointer;border:none;transition:opacity .15s,transform .1s;text-decoration:none}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:var(--gold);color:#fff}
+.btn-primary:hover{opacity:.9}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-ghost{background:transparent;color:var(--text-muted);padding:.5rem .875rem}
+.btn-ghost:hover{color:var(--text);background:var(--bg-alt)}
+.btn-sm{padding:.45rem 1rem;font-size:.8rem}
+.btn-full{width:100%}
+.btn-gold-text{background:none;border:none;color:var(--gold);font-family:var(--font-ar);font-size:.875rem;font-weight:600;cursor:pointer;padding:0;display:inline-flex;align-items:center;gap:.3rem}
+.btn-gold-text:hover{text-decoration:underline}
+.btn-link{background:none;border:none;color:var(--gold);font-family:var(--font-ar);font-size:.85rem;cursor:pointer;padding:0}
+
+/* ── Cards ── */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm)}
+.card-pad{padding:1.5rem}
+
+/* ── Section labels ── */
+.section-label{font-family:var(--font-en);font-size:.62rem;font-weight:500;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.35rem}
+.section-title{font-family:var(--font-serif);font-size:1.9rem;font-weight:600;line-height:1.2;color:var(--text);margin-bottom:.6rem}
+.section-desc{font-size:.9rem;color:var(--text-muted);line-height:1.7}
+
+/* ── Badges ── */
+.badge{display:inline-block;padding:.25rem .75rem;border-radius:var(--radius-pill);font-size:.72rem;font-weight:600;border:1px solid}
+.badge-beginner{background:var(--green-bg);color:var(--green);border-color:#b7dece}
+.badge-intermediate{background:var(--amber-bg);color:var(--amber);border-color:#e8d49a}
+.badge-advanced{background:var(--red-bg);color:var(--red);border-color:#f5c6c0}
+.badge-pending{background:var(--amber-bg);color:var(--amber);border-color:#e8d49a}
+.badge-confirmed{background:var(--green-bg);color:var(--green);border-color:#b7dece}
+.badge-cancelled{background:var(--red-bg);color:var(--red);border-color:#f5c6c0}
+
+/* ── Form ── */
+.form-group{display:flex;flex-direction:column;gap:.45rem}
+.form-label{font-size:.85rem;font-weight:600;color:var(--text)}
+.form-input,.form-select,.form-textarea{width:100%;padding:.75rem 1rem;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-alt);color:var(--text);font-family:var(--font-ar);font-size:.9rem;outline:none;transition:border-color .15s,box-shadow .15s;appearance:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,150,62,.12)}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text-muted)}
+.form-textarea{resize:none}
+.form-error{font-size:.78rem;color:var(--red);margin-top:.2rem;display:none}
+.form-error.show{display:block}
+.form-stack{display:flex;flex-direction:column;gap:1.1rem}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238C7E72' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:left .85rem center;padding-left:2.25rem}
+
+/* ── Modal ── */
+.modal-backdrop{position:fixed;inset:0;z-index:200;background:rgba(28,21,16,.45);backdrop-filter:blur(4px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-backdrop.open{opacity:1;pointer-events:all}
+.modal-sheet{background:var(--card);border-radius:var(--radius-lg) var(--radius-lg) 0 0;width:100%;max-width:var(--max);padding:1.5rem 1.5rem 2rem;transform:translateY(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);max-height:92dvh;overflow-y:auto;position:relative}
+.modal-backdrop.open .modal-sheet{transform:translateY(0)}
+.modal-handle{width:2.5rem;height:4px;background:var(--border);border-radius:2px;margin:0 auto 1.25rem}
+.modal-title{font-family:var(--font-serif);font-size:1.5rem;font-weight:600;text-align:center;margin-bottom:1.5rem}
+.modal-close{position:absolute;top:1rem;left:1rem;background:var(--bg-alt);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;color:var(--text-muted)}
+.modal-close:hover{color:var(--text)}
+
+/* ── Toast ── */
+#toast-container{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:.5rem;align-items:center;pointer-events:none}
+.toast{background:var(--text);color:#fff;padding:.65rem 1.25rem;border-radius:var(--radius-pill);font-size:.85rem;font-weight:500;white-space:nowrap;box-shadow:var(--shadow-lg);pointer-events:all;animation:toastIn .25s ease forwards}
+.toast.success{background:var(--green)}
+.toast.error{background:var(--red)}
+@keyframes toastIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.toast.out{animation:toastOut .2s ease forwards}
+@keyframes toastOut{to{opacity:0;transform:translateY(8px)}}
+
+/* ── Skeleton ── */
+.skeleton{background:linear-gradient(90deg,var(--border) 25%,var(--bg-alt) 50%,var(--border) 75%);background-size:200% 100%;border-radius:var(--radius-sm);animation:shimmer 1.4s infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.skel-card{height:140px;border-radius:var(--radius-lg)}
+.skel-line{height:18px;border-radius:4px}
+
+/* ── Stats ── */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem;text-align:center}
+.stat-val{font-family:var(--font-en);font-size:1.4rem;font-weight:700;color:var(--gold)}
+.stat-label{font-size:.72rem;color:var(--text-muted);margin-top:.15rem}
+
+/* ── Course card ── */
+.course-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:.875rem;cursor:pointer;transition:border-color .15s,box-shadow .15s}
+.course-card:hover{border-color:rgba(184,150,62,.4);box-shadow:var(--shadow)}
+.course-card-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.75rem}
+.course-card-title{font-weight:700;font-size:.95rem;margin:.35rem 0 .3rem;line-height:1.35}
+.course-card-desc{font-size:.82rem;color:var(--text-muted);line-height:1.6;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.course-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:.875rem;padding-top:.875rem;border-top:1px solid var(--border)}
+.course-card-meta{font-size:.75rem;color:var(--text-muted)}
+.price{font-family:var(--font-en);font-size:1.2rem;font-weight:700;color:var(--gold)}
+
+/* ── Booking card ── */
+.booking-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-bottom:.75rem}
+.booking-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:.5rem;margin-bottom:.6rem}
+.booking-card-title{font-weight:700;font-size:.9rem}
+.booking-card-meta{display:flex;align-items:center;justify-content:space-between;font-size:.75rem;color:var(--text-muted)}
+
+/* ── Detail ── */
+.back-btn{display:inline-flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--text-muted);cursor:pointer;background:none;border:none;margin-bottom:1.25rem;margin-top:.5rem;font-family:var(--font-ar)}
+.back-btn:hover{color:var(--text)}
+.detail-title{font-family:var(--font-serif);font-size:1.7rem;font-weight:600;line-height:1.25;margin-bottom:.75rem;margin-top:.75rem}
+.detail-desc{font-size:.9rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.5rem}
+.meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:.625rem;margin-bottom:1.5rem}
+.meta-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem;display:flex;align-items:center;gap:.625rem}
+.meta-icon{font-size:1.1rem;flex-shrink:0}
+.meta-label{font-size:.7rem;color:var(--text-muted)}
+.meta-val{font-size:.85rem;font-weight:600}
+.learn-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.25rem;margin-bottom:1.5rem}
+.learn-title{font-weight:700;margin-bottom:.875rem}
+.learn-item{display:flex;align-items:center;gap:.625rem;font-size:.875rem;margin-bottom:.625rem}
+.learn-dot{width:18px;height:18px;background:var(--gold-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.6rem;flex-shrink:0}
+
+/* ── Hero ── */
+.hero{text-align:center;padding:3rem 0 2rem}
+.hero-label{font-family:var(--font-en);font-size:.62rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.hero-title{font-family:var(--font-serif);font-size:2.1rem;font-weight:600;line-height:1.25;margin-bottom:.875rem}
+.hero-desc{font-size:.9rem;color:var(--text-muted);max-width:340px;margin:0 auto 1.75rem;line-height:1.75}
+.hero-btns{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+
+/* ── Service card ── */
+.service-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:.875rem}
+.service-icon{font-size:2.25rem;margin-bottom:.875rem}
+.service-title{font-weight:700;font-size:1.1rem;margin-bottom:.45rem}
+.service-desc{font-size:.85rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem}
+
+/* ── Admin ── */
+.admin-tabs{display:flex;gap:.5rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.admin-tab{padding:.45rem 1rem;border-radius:var(--radius-pill);font-size:.82rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--text-muted);transition:all .15s;font-family:var(--font-ar)}
+.admin-tab.active{background:var(--gold);border-color:var(--gold);color:#fff}
+.admin-row{padding:1rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.75rem}
+.admin-row:last-child{border-bottom:none}
+.admin-row-main{flex:1;min-width:0}
+.admin-row-title{font-weight:600;font-size:.9rem;margin-bottom:.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.admin-row-sub{font-size:.75rem;color:var(--text-muted)}
+.admin-block{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;margin-bottom:.75rem}
+.status-select{padding:.35rem .6rem;border-radius:var(--radius-pill);font-family:var(--font-ar);font-size:.75rem;font-weight:600;cursor:pointer;border:1.5px solid;outline:none;background:none}
+.status-select.pending{color:var(--amber);border-color:#e8d49a;background:var(--amber-bg)}
+.status-select.confirmed{color:var(--green);border-color:#b7dece;background:var(--green-bg)}
+.status-select.cancelled{color:var(--red);border-color:#f5c6c0;background:var(--red-bg)}
+
+/* ── Filter ── */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.25rem}
+.filter-pill{padding:.4rem 1rem;border-radius:var(--radius-pill);font-size:.8rem;font-weight:500;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--text-muted);transition:all .15s;font-family:var(--font-ar)}
+.filter-pill.active{background:var(--gold);border-color:var(--gold);color:#fff}
+
+/* ── Search ── */
+.search-wrap{position:relative;margin-bottom:1rem}
+.search-wrap input{padding-right:2.75rem}
+.search-icon{position:absolute;right:.9rem;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:1rem}
+
+/* ── Page header ── */
+.page-header{padding:2.5rem 0 1.5rem}
+
+/* ── Empty ── */
+.empty{text-align:center;padding:3rem 1rem;border:1.5px dashed var(--border);border-radius:var(--radius-lg)}
+.empty-icon{font-size:2.5rem;margin-bottom:.75rem}
+.empty-text{font-size:.9rem;color:var(--text-muted);margin-bottom:1.25rem}
+
+/* ── Footer ── */
+.footer{border-top:1px solid var(--border);padding:1.75rem 0;text-align:center;margin-top:3rem}
+.footer-text{font-size:.75rem;color:var(--text-muted)}
+
+/* ── Utils ── */
+.text-gold{color:var(--gold)}
+.text-muted{color:var(--text-muted)}
+.text-center{text-align:center}
+.font-bold{font-weight:700}
+.hidden{display:none!important}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+.flex-gap{display:flex;align-items:center;gap:.625rem}
+.section-gap{margin-bottom:3rem}
+.loader{display:flex;flex-direction:column;gap:.75rem;padding:.5rem 0}
+.divider{height:1px;background:var(--border);margin:1rem 0}
+.section-mini-label{font-size:.72rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.75rem}
+</style>
+</head>
+
+<body>
+
+<!-- ── Navbar ── -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <button class="menu-btn" id="menuBtn" aria-label="القائمة" onclick="toggleDrawer()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="brand" onclick="navigate('home')">
+      <span class="brand-en">C. Maryam Alghwari</span>
+      <span class="brand-ar">مريم الجهوري</span>
+    </div>
+  </div>
+</nav>
+
+<!-- ── Drawer ── -->
+<div class="drawer" id="drawer">
+  <div class="drawer-inner">
+    <div style="display:flex;flex-direction:column;gap:.25rem">
+      <span class="drawer-link" onclick="navigate('home');closeDrawer()">الرئيسية</span>
+      <span class="drawer-link" onclick="navigate('courses');closeDrawer()">الكورسات</span>
+      <div class="drawer-divider"></div>
+      <div id="drawerAuth"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Toast ── -->
+<div id="toast-container"></div>
+
+<!-- ── Login Modal ── -->
+<div class="modal-backdrop" id="loginModal" onclick="if(event.target.id==='loginModal')closeModal('loginModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+    <h2 class="modal-title">تسجيل الدخول</h2>
+    <form class="form-stack" onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input class="form-input" type="email" id="loginEmail" placeholder="example@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
+        <input class="form-input" type="password" id="loginPass" placeholder="••••••••" required>
+        <span class="form-error" id="loginErr"></span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" id="loginBtn">✦ تسجيل الدخول</button>
+      <p class="text-center" style="font-size:.85rem;color:var(--text-muted)">
+        ليس لديك حساب؟
+        <button type="button" class="btn-link" onclick="closeModal('loginModal');openModal('registerModal')">أنشئي حسابًا</button>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ── Register Modal ── -->
+<div class="modal-backdrop" id="registerModal" onclick="if(event.target.id==='registerModal')closeModal('registerModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+    <h2 class="modal-title">إنشاء حساب</h2>
+    <form class="form-stack" onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
+        <input class="form-input" type="text" id="regName" placeholder="اكتبي اسمك هنا" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input class="form-input" type="email" id="regEmail" placeholder="example@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
+        <input class="form-input" type="password" id="regPass" placeholder="6 أحرف على الأقل" minlength="6" required>
+        <span class="form-error" id="regErr"></span>
+      </div>
+      <button type="submit" class="btn btn-primary btn-full" id="registerBtn">✦ إنشاء الحساب</button>
+      <p class="text-center" style="font-size:.85rem;color:var(--text-muted)">
+        لديك حساب؟
+        <button type="button" class="btn-link" onclick="closeModal('registerModal');openModal('loginModal')">تسجيل الدخول</button>
+      </p>
+    </form>
+  </div>
+</div>
+
+<!-- ── Course Form Modal (admin) ── -->
+<div class="modal-backdrop" id="courseModal" onclick="if(event.target.id==='courseModal')closeModal('courseModal')">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <button class="modal-close" onclick="closeModal('courseModal')">×</button>
+    <h2 class="modal-title" id="courseModalTitle">كورس جديد</h2>
+    <form class="form-stack" onsubmit="saveCourse(event)">
+      <input type="hidden" id="courseId">
+      <div class="form-group"><label class="form-label">العنوان</label><input class="form-input" id="cTitle" required></div>
+      <div class="form-group"><label class="form-label">الوصف</label><textarea class="form-textarea" id="cDesc" rows="3" required></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.875rem">
+        <div class="form-group"><label class="form-label">المستوى</label>
+          <select class="form-select" id="cLevel">
+            <option value="beginner">مبتدئ</option>
+            <option value="intermediate">متوسط</option>
+            <option value="advanced">متقدم</option>
+          </select>
+        </div>
+        <div class="form-group"><label class="form-label">المدة</label><input class="form-input" id="cDuration" placeholder="4 أسابيع" required></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.875rem">
+        <div class="form-group"><label class="form-label">السعر ($)</label><input class="form-input" type="number" id="cPrice" min="0" required></div>
+        <div class="form-group"><label class="form-label">المقاعد</label><input class="form-input" type="number" id="cSeats" min="1" required></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.875rem">
+        <div class="form-group"><label class="form-label">تاريخ البدء</label><input class="form-input" type="date" id="cStart"></div>
+        <div class="form-group"><label class="form-label">تاريخ الانتهاء</label><input class="form-input" type="date" id="cEnd"></div>
+      </div>
+      <div class="form-group" style="flex-direction:row;align-items:center;justify-content:space-between;background:var(--bg-alt);border-radius:var(--radius-sm);padding:.75rem 1rem">
+        <label class="form-label" style="margin:0">نشر الكورس</label>
+        <input type="checkbox" id="cPublished" style="width:18px;height:18px;accent-color:var(--gold)">
+      </div>
+      <span class="form-error" id="courseFormErr"></span>
+      <div style="display:flex;gap:.625rem;justify-content:flex-end">
+        <button type="button" class="btn btn-outline btn-sm" onclick="closeModal('courseModal')">إلغاء</button>
+        <button type="submit" class="btn btn-primary btn-sm" id="saveCourseBtn">حفظ الكورس</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ══════════════════════════ VIEW: HOME ══════════════════════════ -->
+<div class="view active" id="view-home">
+  <div class="container">
+    <div class="hero">
+      <p class="hero-label">Maryam Alghwari</p>
+      <h1 class="hero-title">رحلتك المالية<br>تبدأ هنا</h1>
+      <p class="hero-desc">خدمات مالية حصرية وبرامج تعليمية متخصصة في التداول والاستثمار — مصممة لمن يريد الانتقال إلى مستوى أعلى</p>
+      <div class="hero-btns">
+        <button class="btn btn-primary" onclick="navigate('courses')">تصفح الكورسات</button>
+        <button class="btn btn-outline" onclick="scrollToForm()">أرسلي طلبك</button>
+      </div>
+    </div>
+
+    <!-- Services -->
+    <div class="section-gap">
+      <div class="text-center" style="margin-bottom:1.5rem">
+        <p class="section-label">EXCLUSIVE</p>
+        <h2 class="section-title">الخدمات الخاصة</h2>
+        <p class="section-desc">خدمات حصرية مصممة لمن يريد الانتقال إلى مستوى أعلى في رحلته المالية</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">💰</div>
+        <h3 class="service-title">الصناديق الاستثمارية</h3>
+        <p class="service-desc">صناديق استثمارية مدارة باحترافية بعوائد شهرية منتظمة وشفافية كاملة</p>
+        <button class="btn-gold-text" onclick="scrollToForm()">✦ اكتشف الصناديق</button>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🎓</div>
+        <h3 class="service-title">الكورسات والتسجيل</h3>
+        <p class="service-desc">برامج تعليمية متخصصة في التداول والاستثمار من الأسس إلى الاحترافية</p>
+        <button class="btn-gold-text" onclick="navigate('courses')">✦ اكتشف الكورسات</button>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📊</div>
+        <h3 class="service-title">الاستشارة الخاصة</h3>
+        <p class="service-desc">جلسات فردية مخصصة لتحليل وضعك المالي ووضع خطة استثمارية متكاملة</p>
+        <button class="btn-gold-text" onclick="scrollToForm()">✦ احجزي استشارة</button>
+      </div>
+    </div>
+
+    <!-- Featured courses -->
+    <div class="section-gap">
+      <div style="margin-bottom:1.25rem">
+        <p class="section-label">COURSES</p>
+        <h2 class="section-title" style="font-size:1.5rem">الكورسات المتاحة</h2>
+      </div>
+      <div id="homeCourses"><div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div></div>
+      <div class="text-center" style="margin-top:.75rem">
+        <button class="btn-gold-text" onclick="navigate('courses')">عرض جميع الكورسات ←</button>
+      </div>
+    </div>
+
+    <!-- Request form -->
+    <div class="section-gap" id="bookingSection">
+      <div class="card card-pad">
+        <h2 class="section-title text-center" style="font-size:1.5rem;margin-bottom:1.5rem">أرسلي طلبك</h2>
+        <div id="requestSuccess" class="hidden text-center" style="padding:2rem 0">
+          <div style="font-size:2.5rem;margin-bottom:.75rem">✅</div>
+          <p class="font-bold" style="font-size:1.05rem;margin-bottom:.3rem">تم إرسال طلبك بنجاح</p>
+          <p class="text-muted" style="font-size:.85rem">سنتواصل معك في أقرب وقت.</p>
+        </div>
+        <form class="form-stack" id="requestForm" onsubmit="handleRequest(event)">
+          <div class="form-group"><label class="form-label">الاسم الكامل</label><input class="form-input" id="reqName" placeholder="اكتبي اسمك هنا" required></div>
+          <div class="form-group"><label class="form-label">رقم الهاتف</label><input class="form-input" type="tel" id="reqPhone" placeholder="+966 5X XXX XXXX" required></div>
+          <div class="form-group"><label class="form-label">نوع الخدمة</label>
+            <select class="form-select" id="reqService" required>
+              <option value="" disabled selected>اختاري الخدمة المناسبة</option>
+              <option value="investment">الصناديق الاستثمارية</option>
+              <option value="courses">الكورسات والتسجيل</option>
+              <option value="consulting">الاستشارة الخاصة</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">رسالتك</label><textarea class="form-textarea" id="reqMessage" rows="4" placeholder="أخبريني عن هدفك المالي وكيف يمكنني مساعدتك..." required></textarea></div>
+          <button type="submit" class="btn btn-primary btn-full">✦ احجزي الآن</button>
+        </form>
+      </div>
+    </div>
+    <div class="footer"><p class="footer-text">© <span id="yr1"></span> مريم الجهوري · جميع الحقوق محفوظة</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ VIEW: COURSES ═══════════════════════ -->
+<div class="view" id="view-courses">
+  <div class="container">
+    <div class="page-header">
+      <p class="section-label">COURSES</p>
+      <h1 class="section-title" style="font-size:1.6rem">الكورسات المتاحة</h1>
+      <p class="section-desc">اختاري المستوى المناسب وابدئي رحلتك</p>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input class="form-input" type="search" id="courseSearch" placeholder="ابحثي عن كورس..." oninput="filterCourses()">
+    </div>
+    <div class="filter-bar">
+      <button class="filter-pill active" onclick="setLevel(this,'all')">الكل</button>
+      <button class="filter-pill" onclick="setLevel(this,'beginner')">مبتدئ</button>
+      <button class="filter-pill" onclick="setLevel(this,'intermediate')">متوسط</button>
+      <button class="filter-pill" onclick="setLevel(this,'advanced')">متقدم</button>
+    </div>
+    <div id="coursesList"><div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div></div>
+    <div class="footer"><p class="footer-text">© <span class="yr"></span> مريم الجهوري · جميع الحقوق محفوظة</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ VIEW: DETAIL ════════════════════════ -->
+<div class="view" id="view-detail">
+  <div class="container">
+    <button class="back-btn" onclick="navigate('courses')">› العودة للكورسات</button>
+    <div id="detailContent"></div>
+    <div class="footer"><p class="footer-text">© <span class="yr"></span> مريم الجهوري · جميع الحقوق محفوظة</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ VIEW: DASHBOARD ════════════════════ -->
+<div class="view" id="view-dashboard">
+  <div class="container">
+    <div class="page-header">
+      <p class="section-label">MY ACCOUNT</p>
+      <h1 class="section-title" style="font-size:1.6rem">حجوزاتي</h1>
+      <p class="section-desc" id="dashWelcome"></p>
+    </div>
+    <div class="stats-grid" style="margin-bottom:1.5rem" id="dashStats"></div>
+    <div id="dashContent"></div>
+    <div class="footer"><p class="footer-text">© <span class="yr"></span> مريم الجهوري · جميع الحقوق محفوظة</p></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ VIEW: ADMIN ════════════════════════ -->
+<div class="view" id="view-admin">
+  <div class="container">
+    <div class="page-header">
+      <p class="section-label">ADMIN</p>
+      <h1 class="section-title" style="font-size:1.6rem">لوحة التحكم</h1>
+    </div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" onclick="adminTab(this,'apanel-overview')">نظرة عامة</button>
+      <button class="admin-tab" onclick="adminTab(this,'apanel-courses')">الكورسات</button>
+      <button class="admin-tab" onclick="adminTab(this,'apanel-bookings')">الحجوزات</button>
+    </div>
+    <div id="apanel-overview"></div>
+    <div id="apanel-courses" class="hidden"></div>
+    <div id="apanel-bookings" class="hidden"></div>
+    <div class="footer"><p class="footer-text">© <span class="yr"></span> مريم الجهوري · جميع الحقوق محفوظة</p></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ── Constants ── */
+const LEVEL = {beginner:'مبتدئ',intermediate:'متوسط',advanced:'متقدم'};
+const STATUS_AR = {pending:'قيد المراجعة',confirmed:'مؤكد',cancelled:'ملغي'};
+const yr = new Date().getFullYear();
+document.getElementById('yr1').textContent = yr;
+document.querySelectorAll('.yr').forEach(e => e.textContent = yr);
+
+/* ── State ── */
+const S = {user:null, courses:[], levelFilter:'all'};
+
+/* ── API ── */
+async function api(path, {method='GET', body}={}) {
+  const opts = {method, headers:{'Content-Type':'application/json'}, credentials:'include'};
+  if (body) opts.body = JSON.stringify(body);
+  const res = await fetch('/api' + path, opts);
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw data;
+  return data;
+}
+
+/* ── Toast ── */
+function toast(msg, type='') {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' '+type : '');
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => {el.classList.add('out'); setTimeout(() => el.remove(), 250);}, 3000);
+}
+
+/* ── Drawer ── */
+function toggleDrawer() {
+  document.getElementById('drawer').classList.toggle('open');
+  document.getElementById('menuBtn').classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('menuBtn').classList.remove('open');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.drawer') && !e.target.closest('.menu-btn')) closeDrawer();
+});
+
+function renderDrawerAuth() {
+  const el = document.getElementById('drawerAuth');
+  if (S.user) {
+    el.innerHTML = (S.user.role === 'admin' ? `<span class="drawer-link" onclick="navigate('admin');closeDrawer()">⚙️ لوحة التحكم</span>` : '')
+      + `<span class="drawer-link" onclick="navigate('dashboard');closeDrawer()">📋 حجوزاتي</span>`
+      + `<div class="drawer-divider"></div>`
+      + `<div class="drawer-user"><span class="drawer-user-name">${S.user.name}</span><button class="btn btn-ghost btn-sm" onclick="handleLogout()">خروج</button></div>`;
+  } else {
+    el.innerHTML = `<button class="btn btn-outline btn-sm" style="margin:.25rem .875rem;display:block" onclick="openModal('loginModal');closeDrawer()">تسجيل الدخول</button>`
+      + `<button class="btn btn-primary btn-sm" style="margin:.25rem .875rem;display:block" onclick="openModal('registerModal');closeDrawer()">إنشاء حساب</button>`;
+  }
+}
+
+/* ── Modal ── */
+function openModal(id) {document.getElementById(id).classList.add('open');}
+function closeModal(id) {document.getElementById(id).classList.remove('open');}
+
+/* ── Router ── */
+function navigate(view, param) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  const el = document.getElementById('view-' + view);
+  if (!el) return;
+  el.classList.add('active');
+  window.scrollTo(0,0);
+  S.currentView = view;
+  const h = view === 'home' ? '' : view + (param ? '/'+param : '');
+  history.pushState(null,'','#'+h);
+  if (view === 'home') loadHomeCourses();
+  if (view === 'courses') loadCoursesView();
+  if (view === 'detail' && param) loadDetail(param);
+  if (view === 'dashboard') loadDashboard();
+  if (view === 'admin') loadAdmin();
+}
+
+function handleHash() {
+  const h = location.hash.replace('#','');
+  if (!h || h === 'home') {navigate('home'); return;}
+  const parts = h.split('/');
+  if (parts[0] === 'detail' && parts[1]) navigate('detail', parts[1]);
+  else navigate(parts[0]);
+}
+window.addEventListener('popstate', handleHash);
+
+/* ── Auth ── */
+async function checkAuth() {
+  try {S.user = (await api('/auth/me')).user;} catch {S.user = null;}
+  renderDrawerAuth();
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('loginBtn');
+  btn.textContent = 'جاري الدخول...'; btn.disabled = true;
+  document.getElementById('loginErr').classList.remove('show');
+  try {
+    const res = await api('/auth/login', {method:'POST', body:{email:document.getElementById('loginEmail').value, password:document.getElementById('loginPass').value}});
+    S.user = res.user; renderDrawerAuth(); closeModal('loginModal');
+    toast('أهلاً، '+S.user.name+' 👋','success');
+    e.target.reset();
+    navigate(S.user.role === 'admin' ? 'admin' : 'dashboard');
+  } catch(err) {
+    const el = document.getElementById('loginErr');
+    el.textContent = err.error || 'البريد أو كلمة المرور غير صحيحة';
+    el.classList.add('show');
+  } finally {btn.textContent = '✦ تسجيل الدخول'; btn.disabled = false;}
+}
+
+async function handleRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('registerBtn');
+  btn.textContent = 'جاري الإنشاء...'; btn.disabled = true;
+  document.getElementById('regErr').classList.remove('show');
+  try {
+    const res = await api('/auth/register', {method:'POST', body:{name:document.getElementById('regName').value, email:document.getElementById('regEmail').value, password:document.getElementById('regPass').value}});
+    S.user = res.user; renderDrawerAuth(); closeModal('registerModal');
+    toast('مرحباً بك، '+S.user.name+' 🎉','success');
+    e.target.reset(); navigate('courses');
+  } catch(err) {
+    const el = document.getElementById('regErr');
+    el.textContent = err.error || 'تعذّر إنشاء الحساب';
+    el.classList.add('show');
+  } finally {btn.textContent = '✦ إنشاء الحساب'; btn.disabled = false;}
+}
+
+async function handleLogout() {
+  try {await api('/auth/logout', {method:'POST'});} catch {}
+  S.user = null; renderDrawerAuth(); navigate('home'); toast('تم تسجيل الخروج');
+}
+
+/* ── Courses ── */
+function courseCardHTML(c) {
+  return `<div class="course-card" onclick="navigate('detail',${c.id})">
+    <div class="course-card-top">
+      <span class="badge badge-${c.level}">${LEVEL[c.level]||c.level}</span>
+      <span class="price">$${c.price}</span>
+    </div>
+    <div class="course-card-title">${c.title}</div>
+    <div class="course-card-desc">${c.description}</div>
+    <div class="course-card-footer">
+      <span class="course-card-meta">${c.duration} · ${c.seatsAvailable} مقعد متبقي</span>
+      <span style="font-size:.82rem;font-weight:600;color:var(--gold)">التفاصيل ←</span>
+    </div>
+  </div>`;
+}
+
+async function loadHomeCourses() {
+  const el = document.getElementById('homeCourses');
+  if (!el) return;
+  if (!S.courses.length) {
+    el.innerHTML = '<div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div>';
+    try {S.courses = await api('/courses');} catch {S.courses = [];}
+  }
+  el.innerHTML = S.courses.slice(0,3).map(courseCardHTML).join('') || '<p class="text-muted" style="font-size:.85rem">لا توجد كورسات متاحة حالياً.</p>';
+}
+
+async function loadCoursesView() {
+  const el = document.getElementById('coursesList');
+  if (!S.courses.length) {
+    el.innerHTML = '<div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div>';
+    try {S.courses = await api('/courses');} catch {S.courses = [];}
+  }
+  filterCourses();
+}
+
+function filterCourses() {
+  const search = (document.getElementById('courseSearch')?.value||'').toLowerCase();
+  const filtered = S.courses.filter(c => {
+    const lOk = S.levelFilter === 'all' || c.level === S.levelFilter;
+    const sOk = !search || c.title.toLowerCase().includes(search) || c.description.toLowerCase().includes(search);
+    return lOk && sOk;
+  });
+  const el = document.getElementById('coursesList');
+  if (!el) return;
+  el.innerHTML = filtered.length ? filtered.map(courseCardHTML).join('')
+    : '<div class="empty"><div class="empty-icon">🔍</div><p class="empty-text">لا توجد كورسات مطابقة</p></div>';
+}
+
+function setLevel(btn, level) {
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  S.levelFilter = level;
+  filterCourses();
+}
+
+/* ── Course Detail ── */
+async function loadDetail(id) {
+  const el = document.getElementById('detailContent');
+  el.innerHTML = '<div class="loader"><div class="skeleton skel-card" style="height:220px"></div><div class="skeleton skel-line" style="margin-top:.75rem"></div></div>';
+  let course = S.courses.find(c => String(c.id) === String(id));
+  if (!course) {try {course = await api('/courses/'+id);} catch {el.innerHTML = '<p class="text-muted">الكورس غير موجود.</p>'; return;}}
+  S.currentCourse = course;
+  const fmt = d => d ? new Date(d).toLocaleDateString('ar-SA',{day:'numeric',month:'long',year:'numeric'}) : '—';
+  const learns = ['تقنيات تحليل السوق العملية','إدارة المخاطر وتحديد حجم المراكز','استراتيجيات الدخول والخروج','بناء نظام التداول الخاص بك'];
+  el.innerHTML = `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.75rem">
+      <span class="badge badge-${course.level}">${LEVEL[course.level]||course.level}</span>
+      <span class="price" style="font-size:1.4rem">$${course.price}</span>
+    </div>
+    <h1 class="detail-title">${course.title}</h1>
+    <p class="detail-desc">${course.description}</p>
+    <div class="meta-grid">
+      <div class="meta-item"><span class="meta-icon">⏱</span><div><div class="meta-label">المدة</div><div class="meta-val">${course.duration}</div></div></div>
+      <div class="meta-item"><span class="meta-icon">🪑</span><div><div class="meta-label">المقاعد المتبقية</div><div class="meta-val">${course.seatsAvailable}/${course.seats}</div></div></div>
+      ${course.startDate ? `<div class="meta-item"><span class="meta-icon">📅</span><div><div class="meta-label">تاريخ البدء</div><div class="meta-val">${fmt(course.startDate)}</div></div></div>` : ''}
+      ${course.endDate ? `<div class="meta-item"><span class="meta-icon">🏁</span><div><div class="meta-label">تاريخ الانتهاء</div><div class="meta-val">${fmt(course.endDate)}</div></div></div>` : ''}
+    </div>
+    <div class="learn-card">
+      <div class="learn-title">ماذا ستتعلمين</div>
+      ${learns.map(l => `<div class="learn-item"><div class="learn-dot">✦</div><span>${l}</span></div>`).join('')}
+    </div>
+    <div id="bookBtnWrap"></div>`;
+  renderBookBtn(course);
+}
+
+function renderBookBtn(course) {
+  const el = document.getElementById('bookBtnWrap');
+  if (!el) return;
+  if (course.seatsAvailable === 0) {
+    el.innerHTML = `<div style="text-align:center;padding:.875rem;border-radius:var(--radius-pill);background:var(--bg-alt);color:var(--text-muted);font-size:.9rem;font-weight:600">الكورس ممتلئ</div>`;
+  } else if (!S.user) {
+    el.innerHTML = `<button class="btn btn-primary btn-full" onclick="openModal('loginModal')">✦ سجّلي للحجز</button>`;
+  } else {
+    el.innerHTML = `<button class="btn btn-primary btn-full" id="bookNowBtn" onclick="bookCourse(${course.id})">✦ احجزي الآن</button>`;
+  }
+}
+
+async function bookCourse(courseId) {
+  if (!S.user) {openModal('loginModal'); return;}
+  const btn = document.getElementById('bookNowBtn');
+  if (btn) {btn.textContent = 'جاري الحجز...'; btn.disabled = true;}
+  try {
+    await api('/bookings', {method:'POST', body:{courseId}});
+    toast('تم الحجز بنجاح! سيتم تأكيده قريباً.','success');
+    navigate('dashboard');
+  } catch(err) {
+    toast(err.error || 'تعذّر الحجز','error');
+    if (btn) {btn.textContent = '✦ احجزي الآن'; btn.disabled = false;}
+  }
+}
+
+/* ── Dashboard ── */
+async function loadDashboard() {
+  if (!S.user) {navigate('home'); openModal('loginModal'); return;}
+  document.getElementById('dashWelcome').textContent = 'أهلاً، ' + S.user.name;
+  const statsEl = document.getElementById('dashStats');
+  const contEl = document.getElementById('dashContent');
+  statsEl.innerHTML = '';
+  contEl.innerHTML = '<div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div>';
+  let bookings = [];
+  try {bookings = await api('/bookings/my');} catch {}
+  const confirmed = bookings.filter(b => b.status==='confirmed').length;
+  const pending = bookings.filter(b => b.status==='pending').length;
+  statsEl.innerHTML = [['إجمالي الحجوزات',bookings.length],['مؤكدة',confirmed],['قيد المراجعة',pending]]
+    .map(([l,v]) => `<div class="stat-card"><div class="stat-val">${v}</div><div class="stat-label">${l}</div></div>`).join('');
+  if (!bookings.length) {
+    contEl.innerHTML = `<div class="empty"><div class="empty-icon">📋</div><p class="empty-text">لا توجد حجوزات بعد</p><button class="btn btn-primary btn-sm" onclick="navigate('courses')">تصفح الكورسات</button></div>`;
+    return;
+  }
+  const fmt = d => d ? new Date(d).toLocaleDateString('ar-SA') : '';
+  const active = bookings.filter(b => b.status !== 'cancelled');
+  const cancelled = bookings.filter(b => b.status === 'cancelled');
+  const card = (b, dim) => `
+    <div class="booking-card" style="${dim?'opacity:.55':''}">
+      <div class="booking-card-top">
+        <span class="booking-card-title">${b.course.title}</span>
+        <div class="flex-gap">
+          <span class="badge badge-${b.status}">${STATUS_AR[b.status]}</span>
+          ${b.status!=='cancelled' ? `<button style="background:none;border:none;color:var(--red);font-size:.75rem;font-weight:600;cursor:pointer;font-family:var(--font-ar)" onclick="cancelBooking(${b.id})">إلغاء</button>` : ''}
+        </div>
+      </div>
+      <div class="booking-card-meta">
+        <span>${b.course.duration}${b.course.startDate?' · '+fmt(b.course.startDate):''}</span>
+        <span class="text-gold">$${b.course.price}</span>
+      </div>
+    </div>`;
+  contEl.innerHTML =
+    (active.length ? `<p class="section-mini-label">الحجوزات النشطة</p>${active.map(b=>card(b,false)).join('')}` : '') +
+    (cancelled.length ? `<p class="section-mini-label" style="margin-top:1.5rem">الملغية</p>${cancelled.map(b=>card(b,true)).join('')}` : '');
+}
+
+async function cancelBooking(id) {
+  if (!confirm('هل تريدين إلغاء هذا الحجز؟')) return;
+  try {await api('/bookings/'+id, {method:'DELETE'}); toast('تم إلغاء الحجز'); loadDashboard();}
+  catch {toast('تعذّر الإلغاء','error');}
+}
+
+/* ── Request form ── */
+function handleRequest(e) {
+  e.preventDefault();
+  document.getElementById('requestForm').classList.add('hidden');
+  document.getElementById('requestSuccess').classList.remove('hidden');
+  toast('تم إرسال طلبك بنجاح 🎉','success');
+}
+function scrollToForm() {
+  navigate('home');
+  setTimeout(() => document.getElementById('bookingSection').scrollIntoView({behavior:'smooth'}), 100);
+}
+
+/* ── Admin ── */
+function adminTab(btn, id) {
+  document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  ['apanel-overview','apanel-courses','apanel-bookings'].forEach(p => {
+    document.getElementById(p).classList.toggle('hidden', p !== id);
+  });
+}
+
+async function loadAdmin() {
+  if (!S.user || S.user.role !== 'admin') {navigate('home'); return;}
+  await Promise.all([loadAdminOverview(), loadAdminCourses(), loadAdminBookings()]);
+}
+
+async function loadAdminOverview() {
+  const el = document.getElementById('apanel-overview');
+  try {
+    const s = await api('/admin/stats');
+    el.innerHTML = `
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1.5rem">
+        ${[['الكورسات',s.totalCourses],['المستخدمون',s.totalUsers],['الحجوزات',s.totalBookings],['مؤكدة',s.confirmedBookings],['معلقة',s.pendingBookings],['ملغية',s.cancelledBookings]]
+          .map(([l,v]) => `<div class="stat-card"><div class="stat-val">${v}</div><div class="stat-label">${l}</div></div>`).join('')}
+      </div>
+      ${s.recentBookings?.length ? `
+        <p class="section-mini-label">آخر الحجوزات</p>
+        ${s.recentBookings.map(b => `
+          <div class="admin-block">
+            <div class="admin-row">
+              <div class="admin-row-main">
+                <div class="admin-row-title">${b.user.name}</div>
+                <div class="admin-row-sub">${b.course.title}</div>
+              </div>
+              <span class="badge badge-${b.status}">${STATUS_AR[b.status]}</span>
+            </div>
+          </div>`).join('')}` : ''}`;
+  } catch {el.innerHTML = '<p class="text-muted">تعذّر تحميل الإحصائيات.</p>';}
+}
+
+async function loadAdminCourses() {
+  const el = document.getElementById('apanel-courses');
+  el.innerHTML = `<div class="flex-between" style="margin-bottom:1rem"><p class="section-mini-label" style="margin:0">الكورسات</p><button class="btn btn-primary btn-sm" onclick="openCourseModal(null)">+ إضافة</button></div><div id="aCoursesList"><div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div></div>`;
+  try {
+    const courses = await api('/admin/courses');
+    document.getElementById('aCoursesList').innerHTML = courses.length ? courses.map(c => `
+      <div class="admin-block" style="margin-bottom:.625rem">
+        <div class="admin-row">
+          <div class="admin-row-main">
+            <div class="admin-row-title">${c.title}</div>
+            <div class="admin-row-sub">${LEVEL[c.level]||c.level} · $${c.price} · ${c.seatsAvailable}/${c.seats} مقعد · ${c.published?'🟢 منشور':'⚪ مسودة'}</div>
+          </div>
+          <div class="flex-gap">
+            <button class="btn btn-ghost btn-sm" onclick='openCourseModal(${JSON.stringify(c)})'>تعديل</button>
+            <button class="btn btn-sm" style="color:var(--red);background:none;border:none;font-family:var(--font-ar);cursor:pointer" onclick="deleteCourse(${c.id},'${c.title.replace(/'/g,"\\'")}')">حذف</button>
+          </div>
+        </div>
+      </div>`).join('')
+      : '<div class="empty"><p class="empty-text">لا توجد كورسات بعد</p></div>';
+  } catch {document.getElementById('aCoursesList').innerHTML = '<p class="text-muted">تعذّر التحميل.</p>';}
+}
+
+function openCourseModal(c) {
+  document.getElementById('courseModalTitle').textContent = c ? 'تعديل الكورس' : 'كورس جديد';
+  document.getElementById('courseId').value = c?.id || '';
+  document.getElementById('cTitle').value = c?.title || '';
+  document.getElementById('cDesc').value = c?.description || '';
+  document.getElementById('cLevel').value = c?.level || 'beginner';
+  document.getElementById('cDuration').value = c?.duration || '';
+  document.getElementById('cPrice').value = c?.price ?? 0;
+  document.getElementById('cSeats').value = c?.seats ?? 20;
+  document.getElementById('cStart').value = c?.startDate?.split('T')[0] || '';
+  document.getElementById('cEnd').value = c?.endDate?.split('T')[0] || '';
+  document.getElementById('cPublished').checked = c?.published || false;
+  document.getElementById('courseFormErr').classList.remove('show');
+  openModal('courseModal');
+}
+
+async function saveCourse(e) {
+  e.preventDefault();
+  const id = document.getElementById('courseId').value;
+  const btn = document.getElementById('saveCourseBtn');
+  btn.textContent = 'جاري الحفظ...'; btn.disabled = true;
+  const body = {title:document.getElementById('cTitle').value, description:document.getElementById('cDesc').value, level:document.getElementById('cLevel').value, duration:document.getElementById('cDuration').value, price:+document.getElementById('cPrice').value, seats:+document.getElementById('cSeats').value, startDate:document.getElementById('cStart').value||null, endDate:document.getElementById('cEnd').value||null, published:document.getElementById('cPublished').checked};
+  try {
+    if (id) {await api('/admin/courses/'+id, {method:'PATCH', body}); toast('تم التحديث','success');}
+    else {await api('/admin/courses', {method:'POST', body}); toast('تم الإنشاء','success');}
+    S.courses = []; closeModal('courseModal'); loadAdminCourses();
+  } catch(err) {
+    const el = document.getElementById('courseFormErr');
+    el.textContent = err.error || 'حدث خطأ'; el.classList.add('show');
+  } finally {btn.textContent = 'حفظ الكورس'; btn.disabled = false;}
+}
+
+async function deleteCourse(id, title) {
+  if (!confirm('حذف "'+title+'"؟')) return;
+  try {await api('/admin/courses/'+id, {method:'DELETE'}); toast('تم الحذف','success'); S.courses = []; loadAdminCourses();}
+  catch {toast('تعذّر الحذف','error');}
+}
+
+async function loadAdminBookings() {
+  const el = document.getElementById('apanel-bookings');
+  el.innerHTML = '<div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div>';
+  try {
+    const bookings = await api('/admin/bookings');
+    el.innerHTML = bookings.length ? bookings.map(b => `
+      <div class="admin-block" style="margin-bottom:.625rem">
+        <div class="admin-row">
+          <div class="admin-row-main">
+            <div class="admin-row-title">${b.user.name}</div>
+            <div class="admin-row-sub">${b.user.email} · ${b.course.title}</div>
+          </div>
+          <select class="status-select ${b.status}" onchange="updateBookingStatus(${b.id},this)">
+            <option value="pending" ${b.status==='pending'?'selected':''}>قيد المراجعة</option>
+            <option value="confirmed" ${b.status==='confirmed'?'selected':''}>مؤكد</option>
+            <option value="cancelled" ${b.status==='cancelled'?'selected':''}>ملغي</option>
+          </select>
+        </div>
+      </div>`).join('')
+      : '<div class="empty"><p class="empty-text">لا توجد حجوزات بعد</p></div>';
+  } catch {el.innerHTML = '<p class="text-muted">تعذّر التحميل.</p>';}
+}
+
+async function updateBookingStatus(id, sel) {
+  sel.className = 'status-select ' + sel.value;
+  try {await api('/admin/bookings/'+id, {method:'PATCH', body:{status:sel.value}}); toast('تم التحديث','success');}
+  catch {toast('تعذّر التحديث','error');}
+}
+
+/* ── Init ── */
+(async function(){
+  await checkAuth();
+  handleHash();
+  if (!S.currentView || S.currentView === 'home') loadHomeCourses();
+})();
+</script>
+</body>
 </html>

@@ -1,0 +1,36 @@
+const http = require('http');
+const fs = require('fs');
+const path = require('path');
+
+const PORT = process.env.PORT || 3000;
+const API_PORT = 8080;
+const HTML = path.join(__dirname, 'index.html');
+
+http.createServer((req, res) => {
+  // Proxy /api/* → API server on port 8080
+  if (req.url.startsWith('/api')) {
+    const opts = {
+      hostname: 'localhost',
+      port: API_PORT,
+      path: req.url,
+      method: req.method,
+      headers: { ...req.headers, host: 'localhost:' + API_PORT },
+    };
+    const proxy = http.request(opts, (apiRes) => {
+      res.writeHead(apiRes.statusCode, apiRes.headers);
+      apiRes.pipe(res);
+    });
+    proxy.on('error', () => { res.writeHead(502); res.end('API unavailable'); });
+    req.pipe(proxy);
+    return;
+  }
+
+  // Serve index.html for everything else
+  fs.readFile(HTML, (err, data) => {
+    if (err) { res.writeHead(500); res.end('Error'); return; }
+    res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
+    res.end(data);
+  });
+}).listen(PORT, '0.0.0.0', () => {
+  console.log('Server running on port ' + PORT);
+});

@@ -1,0 +1,62 @@
+Min-height: 100vh
+Background: var(--warm-white)
+Padding-top: 80px (navbar height)
+Layout: CSS Grid, 2 columns (text left, visual right)
+Gap: 80px, align-items center
+
+BACKGROUND ELEMENTS (position: absolute, pointer-events: none):
+  1. Grid lines: CSS background-image with 60x60px grid, gold 6% opacity
+  2. Three gradient orbs (blurred circles):
+     - Orb 1: 600px, pink/rose, top-right, blur 80px, opacity 0.45
+     - Orb 2: 500px, sage green, bottom-left
+     - Orb 3: 400px, gold/cream, center
+     - Animation: float up/down 12s infinite (translateY -30px)
+  3. Two decorative circles: border 1px dashed gold 15%, rotating slowly
+  4. SVG chart lines at bottom: polylines with gold/rose gradient stroke,
+     opacity 0.18, fill none
+
+LEFT COLUMN — Hero Text:
+  1. Eyebrow tag:
+     - Pill shape, gold border + background 10%
+     - Pulsing dot before text
+     - Text: "Financial Coaching & Consulting"
+     - Font: Poppins 0.72rem uppercase letter-spacing 0.12em
+
+  2. H1 (Arabic, large):
+     "ابدأ رحلتك المالية"  (line break)
+     "بثقة ووعي"
+     - Second part: gradient text (gold → rose-deep) using background-clip
+
+  3. Subheadline paragraph:
+     "مع C. Maryam Alghwari" (bold)
+     "مستشارة مالية بخبرة أكثر من 7 سنوات في الأسواق المالية"
+     - Font size: 1.05rem, color: text-soft, line-height 1.8
+
+  4. Two CTA buttons (flex row):
+     Primary: "✦ احجز استشارة" → gold gradient, pill, shadow
+     Secondary: "← ابدأ التعلم" → transparent, nude border, hover rose
+
+RIGHT COLUMN — Visual Card:
+  Container: 420px × 520px
+
+  Profile Frame (full size):
+    - Background: gradient beige → nude
+    - Border-radius: 36px
+    - Box-shadow: heavy soft shadow
+    - Giant monogram "MA" in Cormorant 9rem gold 20% opacity (centered)
+    - Radial gradient overlays for depth
+
+  Name Card (bottom of frame, absolute):
+    - Background: rgba white 92%, blur, gold border
+    - Border-radius: 20px, padding 20px 24px
+    - Shows: English name, Arabic name, title
+
+  Three floating stat chips (absolute positioned):
+    Chip 1 (top-left): "+7 / سنوات خبرة"
+    Chip 2 (mid-left): "+100 / طالب محترف"
+    Chip 3 (top-right): "98% / رضا العملاء"
+    - Each: white bg, gold border, blur, float animation
+
+ANIMATION:
+  - Both columns: fadeSlideUp on load (opacity 0 → 1, translateY 40→0)
+  - Right column delayed 0.2s

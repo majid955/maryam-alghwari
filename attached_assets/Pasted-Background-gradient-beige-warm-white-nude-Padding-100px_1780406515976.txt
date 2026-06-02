@@ -1,0 +1,111 @@
+Background: gradient beige → warm-white → nude
+Padding: 100px 5%
+Position relative, overflow hidden
+
+Background orbs: 2 large blurred circles (gold + rose tint)
+
+HEADER: centered, tag "Exclusive", title "الخدمات الخاصة"
+
+GRID: 2 columns, max-width 800px, centered, gap 28px
+
+Each ps-card:
+  - White bg 75%, blur 16px, gold border 20%, radius 24px
+  - Padding 40px 36px, text-align center, cursor pointer
+  - Hover: translateY(-8px), shadow, gold border 35%
+  - Bottom bar 3px gradient gold→rose, scales on hover
+  - Top-left arrow "↗" rotates 45deg on hover
+
+  Card 1: 💰 "الصناديق الاستثمارية"
+    subtitle + "✦ اكتشف الصناديق" CTA
+    onClick: opens #funds-modal
+
+  Card 2: 🎓 "الكورسات والتسجيل"  
+    subtitle + "✦ سجّل الآن" CTA
+    onClick: opens #courses-modal
+
+─────────────────────────────────────────
+MODAL: INVESTMENT FUNDS (#funds-modal)
+─────────────────────────────────────────
+
+Overlay: position fixed, inset 0, z-index 500
+  background: rgba(44,36,32,0.55), blur 8px
+  opacity 0 + pointer-events none by default
+  .open class: opacity 1 + pointer-events all
+  Click outside box = close
+
+Modal box: max-width 860px, max-height 90vh, overflow-y auto
+  white bg, radius 28px, heavy shadow
+  Transform: translateY(40px) scale(0.97) → translateY(0) scale(1) on open
+  Opacity 0 → 1 on open
+
+MODAL HEADER (sticky, blurred bg):
+  Left: icon box + title "الصناديق الاستثمارية" + subtitle
+  Right: close button ✕ (circle, hover rotates 90deg, turns rose)
+
+MODAL BODY padding 36px 40px:
+
+  1. Fee intro box (gold tinted):
+     ✨ "رسوم الأداء 1٪ فقط — ويتم خصمها فقط عند انتهاء مدة الصندوق"
+     Background: gold 8% + rose 6% gradient, gold border
+     
+  2. Notice box (rose tinted, right border 4px rose-deep):
+     ℹ️ "يمكنك سحب الأرباح خلال فترة الاستثمار،
+     أما في حال سحب رأس المال قبل انتهاء مدة الصندوق يتم خصم 10٪ من رأس المال"
+
+  3. Funds grid (3 columns, gap 20px):
+
+  Each fund-card:
+    - White bg, gold border, radius 20px, padding 28px 22px
+    - Top bar: 4px gradient gold→rose (always visible)
+    - Hover: translateY(-6px), shadow
+    - Centered text
+    
+    Has: fund number (small Cormorant gold), fund name (bold),
+    stats rows (3 rows each: label + value, beige bg, rounded),
+    CTA button (full width, gold gradient, pill shape, links to URL)
+    
+    Fund 1:
+      Top: "Fund 01", "الصندوق الأول"
+      Stats: الحد الأدنى: 1,000$ | العائد: 2٪–3٪ (gradient text) | المدة: 3 أشهر
+      Button: "ابدأ الآن" → https://crm.fiper.me/registration-live?ref_id=1041328
+      
+    Fund 2 (featured):
+      Badge top-right: "الأكثر طلباً" (gold pill)
+      Top: "Fund 02", "الصندوق الثاني"
+      Stats: 5,000$ | 3٪–4٪ | 12 شهر
+      Button: "استثمر الآن" → same URL
+      Background: slightly more gold/rose tinted
+
+    Fund 3:
+      Top: "Fund 03", "الصندوق الثالث"
+      Stats: 50,000$ | 4٪–5٪ | 24 شهر
+      Button: "ابدأ استثمارك" → same URL
+
+─────────────────────────────────────────
+MODAL: COURSES (#courses-modal)
+─────────────────────────────────────────
+
+Same overlay structure as above.
+
+MODAL BODY:
+
+  Hero section (centered):
+    - 90px icon box (📚) with gradient + shadow
+    - H3: "ابدأ رحلتك التعليمية"
+    - Para: "يرجى تسجيل البيانات لاستكمال عملية التسجيل..."
+
+  Features grid (2 columns, 6 items):
+    Each: flex row, icon + text, beige bg, gold border, radius 14px
+    Hover: white bg, gold border stronger
+    
+    1. 📊 أساسيات التداول من الصفر
+    2. 🔍 التحليل الفني والأساسي
+    3. 🛡️ إدارة رأس المال والمخاطر
+    4. ⚡ استراتيجيات التداول الحية
+    5. 🤝 دعم ومتابعة شخصية
+    6. 🌿 بناء عقلية مالية صحيحة
+
+  CTA section (centered):
+    Small note: "أماكن محدودة — سارعي بالتسجيل الآن"
+    Big gold button: "✦ التسجيل والدفع"
+    Link: https://forms.gle/WUQXicocSt44pxRQ6 (target _blank)
