@@ -307,6 +307,28 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
 .about-stat-num{font-family:var(--font-serif);font-size:2.8rem;font-weight:700;line-height:1.1;margin-bottom:.5rem;background:linear-gradient(135deg,var(--gold),var(--rose-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .about-stat-label{font-family:var(--font-ar);font-size:.8rem;color:var(--text-mid);line-height:1.55}
 
+/* ── Services Section ────────────────────────────────────────── */
+.services-section{background:var(--warm-white);padding:100px 5%}
+.services-header{text-align:center;max-width:560px;margin:0 auto 56px;direction:rtl}
+.services-header-title{font-family:var(--font-ar);font-size:2.2rem;font-weight:900;color:var(--text);line-height:1.2;margin:.35rem 0 .75rem}
+.services-header-line{width:60px;height:2px;background:linear-gradient(to left,var(--rose),var(--gold));border-radius:2px;margin:.75rem auto 1.25rem}
+.services-header-desc{font-size:.9rem;color:var(--text-muted);line-height:1.8}
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1100px;margin:0 auto}
+@media(max-width:900px){.services-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.services-grid{grid-template-columns:1fr}}
+.svc-card{position:relative;background:rgba(255,255,255,.8);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(196,169,107,.15);border-radius:20px;padding:36px 30px;overflow:hidden;transition:transform .25s,box-shadow .25s,border-color .25s;cursor:default;direction:rtl}
+.svc-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(196,169,107,.06),rgba(212,165,165,.06));opacity:0;transition:opacity .25s;pointer-events:none;border-radius:20px}
+.svc-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,var(--gold),var(--rose));transform:scaleX(0);transition:transform .3s ease}
+.svc-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(196,169,107,.16),0 8px 20px rgba(44,36,32,.06);border-color:rgba(196,169,107,.3)}
+.svc-card:hover::before{opacity:1}
+.svc-card:hover::after{transform:scaleX(1)}
+.svc-card.featured{background:rgba(196,169,107,.05)}
+.svc-icon-box{width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,var(--gold-pale),rgba(212,165,165,.35));display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin-bottom:1.1rem;transition:transform .25s}
+.svc-card:hover .svc-icon-box{transform:rotate(-5deg) scale(1.05)}
+.svc-title{font-family:var(--font-ar);font-size:1.05rem;font-weight:700;color:var(--text);margin-bottom:.5rem;line-height:1.3}
+.svc-desc{font-size:.85rem;color:var(--text-muted);line-height:1.75;margin-bottom:1.1rem}
+.svc-tag{display:inline-block;background:rgba(196,169,107,.1);color:var(--gold-dk);border:1px solid rgba(196,169,107,.2);border-radius:var(--radius-pill);padding:.2rem .75rem;font-family:var(--font-ar);font-size:.72rem;font-weight:600}
+
 /* ── Utils ── */
 .text-gold{color:var(--gold)}
 .text-muted{color:var(--text-muted)}
@@ -545,34 +567,55 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
     </div>
   </section>
 
-  <div class="container">
-
-    <!-- Services -->
-    <div class="section-gap">
-      <div class="text-center" style="margin-bottom:1.5rem">
-        <p class="section-label">EXCLUSIVE</p>
-        <h2 class="section-title">الخدمات الخاصة</h2>
-        <p class="section-desc">خدمات حصرية مصممة لمن يريد الانتقال إلى مستوى أعلى في رحلته المالية</p>
+  <!-- ══ Services Section ══ -->
+  <section class="services-section" id="services">
+    <div class="services-header">
+      <p class="section-label">Services</p>
+      <h2 class="services-header-title">خدماتي المتخصصة</h2>
+      <div class="services-header-line"></div>
+      <p class="services-header-desc">كل خدمة مصممة بعناية لتناسب احتياجاتك المالية وتوصلك إلى أهدافك بأقصر مسار وأقوى أدوات</p>
+    </div>
+    <div class="services-grid">
+      <div class="svc-card featured">
+        <div class="svc-icon-box">📈</div>
+        <div class="svc-title">تعليم التداول للمبتدئين</div>
+        <p class="svc-desc">من الصفر إلى الاحترافية — منهج مبسّط يأخذك خطوة بخطوة عبر أسواق الفوركس والأسهم</p>
+        <span class="svc-tag">الأكثر طلباً</span>
       </div>
-      <div class="service-card">
-        <div class="service-icon">💰</div>
-        <h3 class="service-title">الصناديق الاستثمارية</h3>
-        <p class="service-desc">صناديق استثمارية مدارة باحترافية بعوائد شهرية منتظمة وشفافية كاملة</p>
-        <button class="btn-gold-text" onclick="scrollToForm()">✦ اكتشف الصناديق</button>
+      <div class="svc-card">
+        <div class="svc-icon-box">💼</div>
+        <div class="svc-title">جلسات استشارية مالية</div>
+        <p class="svc-desc">جلسات فردية متخصصة لتحليل وضعك المالي وبناء خطة استثمارية متكاملة تناسبك</p>
+        <span class="svc-tag">مخصص لك</span>
       </div>
-      <div class="service-card">
-        <div class="service-icon">🎓</div>
-        <h3 class="service-title">الكورسات والتسجيل</h3>
-        <p class="service-desc">برامج تعليمية متخصصة في التداول والاستثمار من الأسس إلى الاحترافية</p>
-        <button class="btn-gold-text" onclick="navigate('courses')">✦ اكتشف الكورسات</button>
+      <div class="svc-card">
+        <div class="svc-icon-box">🔍</div>
+        <div class="svc-title">تحليل الأسواق المالية</div>
+        <p class="svc-desc">تحليل تقني وأساسي احترافي للأسواق العالمية مع توصيات وقراءات دورية مفصّلة</p>
+        <span class="svc-tag">تحليل متقدم</span>
       </div>
-      <div class="service-card">
-        <div class="service-icon">📊</div>
-        <h3 class="service-title">الاستشارة الخاصة</h3>
-        <p class="service-desc">جلسات فردية مخصصة لتحليل وضعك المالي ووضع خطة استثمارية متكاملة</p>
-        <button class="btn-gold-text" onclick="scrollToForm()">✦ احجزي استشارة</button>
+      <div class="svc-card">
+        <div class="svc-icon-box">🛡️</div>
+        <div class="svc-title">إدارة المخاطر</div>
+        <p class="svc-desc">تعلّم كيفية حماية رأس مالك وضبط المخاطر بأدوات علمية مجرّبة تُبقيك في السوق طويلاً</p>
+        <span class="svc-tag">حماية رأس المال</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon-box">⚡</div>
+        <div class="svc-title">استراتيجيات التداول</div>
+        <p class="svc-desc">استراتيجيات متعددة ومُختبرة لأنماط مختلفة من المتداولين — من السكالبينج إلى السوينج</p>
+        <span class="svc-tag">استراتيجي</span>
+      </div>
+      <div class="svc-card">
+        <div class="svc-icon-box">🌟</div>
+        <div class="svc-title">متابعة وتوجيه شخصي</div>
+        <p class="svc-desc">دعم مستمر وإجابة على أسئلتك ومتابعة تقدمك لضمان تطورك الحقيقي في رحلة التداول</p>
+        <span class="svc-tag">دعم مستمر</span>
       </div>
     </div>
+  </section>
+
+  <div class="container">
 
     <!-- Featured courses -->
     <div class="section-gap">
