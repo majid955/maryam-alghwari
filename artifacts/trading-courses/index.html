@@ -64,8 +64,15 @@
   --max:520px;
   --nav-h:56px;
 }
-html{scroll-behavior:smooth}
-body{font-family:var(--font-ar);background:var(--bg);color:var(--text);line-height:1.6;min-height:100dvh;-webkit-font-smoothing:antialiased}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);direction:rtl;line-height:1.6;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--beige)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--gold-light)}
+*{scrollbar-width:thin;scrollbar-color:var(--gold) var(--beige)}
 
 /* ── Layout ── */
 .container{max-width:var(--max);margin:0 auto;padding:0 1.25rem}
