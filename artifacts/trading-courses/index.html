@@ -1073,7 +1073,7 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
             <option value="other">أخرى</option>
           </select>
           <textarea class="cform-txta" id="cMessage" placeholder="أخبريني عن هدفك المالي وكيف يمكنني مساعدتك..."></textarea>
-          <button class="cform-sub" id="cSubmitBtn" onclick="handleContactForm()">✦ احجزي الآن</button>
+          <button class="cform-sub" id="cSubmitBtn" onclick="handleContactForm()">✦ احجز الآن</button>
         </div>
       </div>
     </div>
@@ -1534,21 +1534,15 @@ function scrollToForm() {
 }
 /* ── Contact form ── */
 function handleContactForm() {
-  const btn = document.getElementById('cSubmitBtn');
-  const name = document.getElementById('cName').value.trim();
-  const phone = document.getElementById('cPhone').value.trim();
+  const name    = document.getElementById('cName').value.trim();
+  const phone   = document.getElementById('cPhone').value.trim();
   const service = document.getElementById('cService').value;
+  const message = document.getElementById('cMessage').value.trim();
   if (!name || !phone || !service) { toast('يرجى تعبئة جميع الحقول المطلوبة','error'); return; }
-  btn.textContent = '✓ تم الإرسال بنجاح!';
-  btn.classList.add('success');
-  btn.disabled = true;
-  setTimeout(() => {
-    btn.textContent = '✦ احجزي الآن';
-    btn.classList.remove('success');
-    btn.disabled = false;
-    ['cName','cPhone','cMessage'].forEach(id => document.getElementById(id).value = '');
-    document.getElementById('cService').selectedIndex = 0;
-  }, 3000);
+  const text = `الاسم: ${name}\nرقم الهاتف: ${phone}\nنوع الخدمه: ${service}${message ? '\nاستفسارات اخرى: ' + message : ''}\n\nشكراً`;
+  window.open('https://wa.me/96895036660?text=' + encodeURIComponent(text), '_blank');
+  ['cName','cPhone','cMessage'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('cService').selectedIndex = 0;
 }
 /* ── ESC closes any open modal ── */
 document.addEventListener('keydown', e => {
