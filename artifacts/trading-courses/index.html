@@ -1143,28 +1143,6 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
   </div>
 </div>
 
-<!-- ══════════════════════════ VIEW: COURSES ═══════════════════════ -->
-<div class="view" id="view-courses">
-  <div class="container">
-    <div class="page-header">
-      <p class="section-label">COURSES</p>
-      <h1 class="section-title" style="font-size:1.6rem">الكورسات المتاحة</h1>
-      <p class="section-desc">اختاري المستوى المناسب وابدئي رحلتك</p>
-    </div>
-    <div class="search-wrap">
-      <span class="search-icon">🔍</span>
-      <input class="form-input" type="search" id="courseSearch" placeholder="ابحثي عن كورس..." oninput="filterCourses()">
-    </div>
-    <div class="filter-bar">
-      <button class="filter-pill active" onclick="setLevel(this,'all')">الكل</button>
-      <button class="filter-pill" onclick="setLevel(this,'beginner')">مبتدئ</button>
-      <button class="filter-pill" onclick="setLevel(this,'intermediate')">متوسط</button>
-      <button class="filter-pill" onclick="setLevel(this,'advanced')">متقدم</button>
-    </div>
-    <div id="coursesList"><div class="loader"><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div><div class="skeleton skel-card"></div></div></div>
-    <div class="footer"><p class="footer-text">© <span class="yr"></span> مريم الجهوري · جميع الحقوق محفوظة</p></div>
-  </div>
-</div>
 
 <!-- ══════════════════════════ VIEW: DETAIL ════════════════════════ -->
 <div class="view" id="view-detail">
