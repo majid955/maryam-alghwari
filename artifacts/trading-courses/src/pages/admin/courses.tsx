@@ -16,13 +16,15 @@ import { useToast } from "@/hooks/use-toast";
 import { Link } from "wouter";
 import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 
+const levelLabels: Record<string, string> = { beginner: "مبتدئ", intermediate: "متوسط", advanced: "متقدم" };
+
 const courseSchema = z.object({
-  title: z.string().min(3, "Min 3 characters"),
-  description: z.string().min(10, "Min 10 characters"),
+  title: z.string().min(3, "3 أحرف على الأقل"),
+  description: z.string().min(10, "10 أحرف على الأقل"),
   level: z.enum(["beginner", "intermediate", "advanced"]),
-  duration: z.string().min(1, "Required"),
-  price: z.coerce.number().min(0, "Required"),
-  seats: z.coerce.number().int().min(1, "Min 1 seat"),
+  duration: z.string().min(1, "مطلوب"),
+  price: z.coerce.number().min(0, "مطلوب"),
+  seats: z.coerce.number().int().min(1, "مقعد واحد على الأقل"),
   startDate: z.string().optional(),
   endDate: z.string().optional(),
   published: z.boolean(),
@@ -31,19 +33,10 @@ const courseSchema = z.object({
 type CourseFormData = z.infer<typeof courseSchema>;
 
 type Course = {
-  id: number;
-  title: string;
-  description: string;
-  level: string;
-  duration: string;
-  price: number;
-  seats: number;
-  seatsAvailable: number;
-  startDate: string | null;
-  endDate: string | null;
-  published: boolean;
-  imageUrl: string | null;
-  createdAt: string;
+  id: number; title: string; description: string; level: string;
+  duration: string; price: number; seats: number; seatsAvailable: number;
+  startDate: string | null; endDate: string | null; published: boolean;
+  imageUrl: string | null; createdAt: string;
 };
 
 export default function AdminCourses() {
@@ -84,39 +77,28 @@ export default function AdminCourses() {
       updateMutation.mutate(
         { id: editCourse.id, data: payload },
         {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: getGetAdminCoursesQueryKey() });
-            toast({ title: "Course updated" });
-            setOpen(false);
-          },
-          onError: () => toast({ title: "Error", variant: "destructive" }),
+          onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminCoursesQueryKey() }); toast({ title: "تم تحديث الكورس" }); setOpen(false); },
+          onError: () => toast({ title: "خطأ", variant: "destructive" }),
         }
       );
     } else {
       createMutation.mutate(
         { data: payload },
         {
-          onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: getGetAdminCoursesQueryKey() });
-            toast({ title: "Course created" });
-            setOpen(false);
-          },
-          onError: () => toast({ title: "Error", variant: "destructive" }),
+          onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminCoursesQueryKey() }); toast({ title: "تم إنشاء الكورس" }); setOpen(false); },
+          onError: () => toast({ title: "خطأ", variant: "destructive" }),
         }
       );
     }
   };
 
   const handleDelete = (id: number, title: string) => {
-    if (!confirm(`Delete "${title}"?`)) return;
+    if (!confirm(`هل أنتِ متأكدة من حذف "${title}"؟`)) return;
     deleteMutation.mutate(
       { id },
       {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: getGetAdminCoursesQueryKey() });
-          toast({ title: "Course deleted" });
-        },
-        onError: () => toast({ title: "Error", variant: "destructive" }),
+        onSuccess: () => { queryClient.invalidateQueries({ queryKey: getGetAdminCoursesQueryKey() }); toast({ title: "تم حذف الكورس" }); },
+        onError: () => toast({ title: "خطأ", variant: "destructive" }),
       }
     );
   };
@@ -124,125 +106,113 @@ export default function AdminCourses() {
   const isPending = createMutation.isPending || updateMutation.isPending;
 
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-12">
-      <div className="mb-10">
-        <p className="text-xs text-primary uppercase tracking-widest mb-2 font-medium">Admin Panel</p>
-        <h1 className="text-3xl font-bold">Manage Courses</h1>
+    <div className="max-w-2xl mx-auto px-5 py-10">
+      <div className="mb-6">
+        <p className="text-xs tracking-[0.3em] uppercase text-primary font-medium mb-1">ADMIN</p>
+        <h1 className="text-2xl font-extrabold">إدارة الكورسات</h1>
       </div>
 
-      <div className="flex gap-2 mb-8">
-        {[{ href: "/admin", label: "Overview" }, { href: "/admin/courses", label: "Courses" }, { href: "/admin/bookings", label: "Bookings" }].map(({ href, label }) => (
-          <Link key={href} href={href} className="px-4 py-2 rounded-lg text-sm font-medium border border-border hover:border-primary/40 text-muted-foreground hover:text-foreground transition-colors">
+      <div className="flex gap-2 mb-6 flex-wrap">
+        {[{ href: "/admin", label: "الرئيسية" }, { href: "/admin/courses", label: "الكورسات" }, { href: "/admin/bookings", label: "الحجوزات" }].map(({ href, label }) => (
+          <Link key={href} href={href} className="px-4 py-2 rounded-full text-sm font-medium border border-border hover:border-primary/40 text-muted-foreground hover:text-foreground transition-colors">
             {label}
           </Link>
         ))}
       </div>
 
-      <div className="flex justify-end mb-6">
-        <Button onClick={openCreate} size="sm" data-testid="button-add-course">
-          <Plus className="h-4 w-4 mr-2" /> Add Course
-        </Button>
+      <div className="flex justify-start mb-5">
+        <button
+          onClick={openCreate}
+          className="flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-full text-sm font-bold hover:opacity-90 transition-opacity"
+          data-testid="button-add-course"
+        >
+          <Plus className="h-4 w-4" /> إضافة كورس
+        </button>
       </div>
 
       {isLoading ? (
-        <div className="space-y-3">{[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 rounded-lg" />)}</div>
+        <div className="flex flex-col gap-3">{[...Array(4)].map((_, i) => <Skeleton key={i} className="h-20 rounded-2xl" />)}</div>
       ) : (
-        <div className="border border-border rounded-lg overflow-hidden">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-border bg-card/60">
-                <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">Title</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide hidden md:table-cell">Level</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide hidden md:table-cell">Price</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide hidden md:table-cell">Seats</th>
-                <th className="text-left px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">Status</th>
-                <th className="text-right px-4 py-3 text-xs font-medium text-muted-foreground uppercase tracking-wide">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {(courses ?? []).map((c, i) => (
-                <tr key={c.id} className={`${i < (courses!.length - 1) ? "border-b border-border" : ""} hover:bg-card/50 transition-colors`} data-testid={`row-course-${c.id}`}>
-                  <td className="px-4 py-3 font-medium">{c.title}</td>
-                  <td className="px-4 py-3 capitalize text-muted-foreground hidden md:table-cell">{c.level}</td>
-                  <td className="px-4 py-3 text-primary font-semibold hidden md:table-cell">${c.price}</td>
-                  <td className="px-4 py-3 text-muted-foreground hidden md:table-cell">{c.seatsAvailable}/{c.seats}</td>
-                  <td className="px-4 py-3">
-                    {c.published
-                      ? <span className="flex items-center gap-1 text-xs text-emerald-400"><Eye className="h-3 w-3" />Published</span>
-                      : <span className="flex items-center gap-1 text-xs text-muted-foreground"><EyeOff className="h-3 w-3" />Draft</span>}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex items-center justify-end gap-2">
-                      <button onClick={() => openEdit(c as Course)} className="p-1.5 rounded text-muted-foreground hover:text-primary transition-colors" title="Edit" data-testid={`button-edit-course-${c.id}`}>
-                        <Pencil className="h-4 w-4" />
-                      </button>
-                      <button onClick={() => handleDelete(c.id, c.title)} className="p-1.5 rounded text-muted-foreground hover:text-destructive transition-colors" title="Delete" data-testid={`button-delete-course-${c.id}`}>
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex flex-col gap-3">
+          {(courses ?? []).map((c) => (
+            <div key={c.id} className="bg-card rounded-2xl border border-border p-4 flex items-center gap-3" data-testid={`row-course-${c.id}`}>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-bold text-sm truncate">{c.title}</span>
+                  {c.published
+                    ? <span className="flex items-center gap-1 text-xs text-emerald-600 shrink-0"><Eye className="h-3 w-3" />منشور</span>
+                    : <span className="flex items-center gap-1 text-xs text-muted-foreground shrink-0"><EyeOff className="h-3 w-3" />مسودة</span>}
+                </div>
+                <div className="text-xs text-muted-foreground">{levelLabels[c.level]} · ${c.price} · {c.seatsAvailable}/{c.seats} مقعد</div>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button onClick={() => openEdit(c as Course)} className="p-2 rounded-lg text-muted-foreground hover:text-primary transition-colors" data-testid={`button-edit-course-${c.id}`}>
+                  <Pencil className="h-4 w-4" />
+                </button>
+                <button onClick={() => handleDelete(c.id, c.title)} className="p-2 rounded-lg text-muted-foreground hover:text-destructive transition-colors" data-testid={`button-delete-course-${c.id}`}>
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto" dir="rtl">
           <DialogHeader>
-            <DialogTitle>{editCourse ? "Edit Course" : "New Course"}</DialogTitle>
+            <DialogTitle>{editCourse ? "تعديل الكورس" : "كورس جديد"}</DialogTitle>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
               <FormField control={form.control} name="title" render={({ field }) => (
-                <FormItem><FormLabel>Title</FormLabel><FormControl><Input data-testid="input-course-title" {...field} /></FormControl><FormMessage /></FormItem>
+                <FormItem><FormLabel>العنوان</FormLabel><FormControl><Input data-testid="input-course-title" {...field} /></FormControl><FormMessage /></FormItem>
               )} />
               <FormField control={form.control} name="description" render={({ field }) => (
-                <FormItem><FormLabel>Description</FormLabel><FormControl><Textarea rows={3} data-testid="input-course-description" {...field} /></FormControl><FormMessage /></FormItem>
+                <FormItem><FormLabel>الوصف</FormLabel><FormControl><Textarea rows={3} data-testid="input-course-description" {...field} /></FormControl><FormMessage /></FormItem>
               )} />
               <div className="grid grid-cols-2 gap-4">
                 <FormField control={form.control} name="level" render={({ field }) => (
-                  <FormItem><FormLabel>Level</FormLabel>
+                  <FormItem><FormLabel>المستوى</FormLabel>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <FormControl><SelectTrigger data-testid="select-course-level"><SelectValue /></SelectTrigger></FormControl>
                       <SelectContent>
-                        <SelectItem value="beginner">Beginner</SelectItem>
-                        <SelectItem value="intermediate">Intermediate</SelectItem>
-                        <SelectItem value="advanced">Advanced</SelectItem>
+                        <SelectItem value="beginner">مبتدئ</SelectItem>
+                        <SelectItem value="intermediate">متوسط</SelectItem>
+                        <SelectItem value="advanced">متقدم</SelectItem>
                       </SelectContent>
                     </Select><FormMessage />
                   </FormItem>
                 )} />
                 <FormField control={form.control} name="duration" render={({ field }) => (
-                  <FormItem><FormLabel>Duration</FormLabel><FormControl><Input placeholder="e.g. 4 weeks" data-testid="input-course-duration" {...field} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>المدة</FormLabel><FormControl><Input placeholder="مثال: 4 أسابيع" data-testid="input-course-duration" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <FormField control={form.control} name="price" render={({ field }) => (
-                  <FormItem><FormLabel>Price ($)</FormLabel><FormControl><Input type="number" min={0} data-testid="input-course-price" {...field} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>السعر ($)</FormLabel><FormControl><Input type="number" min={0} data-testid="input-course-price" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField control={form.control} name="seats" render={({ field }) => (
-                  <FormItem><FormLabel>Seats</FormLabel><FormControl><Input type="number" min={1} data-testid="input-course-seats" {...field} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>عدد المقاعد</FormLabel><FormControl><Input type="number" min={1} data-testid="input-course-seats" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <FormField control={form.control} name="startDate" render={({ field }) => (
-                  <FormItem><FormLabel>Start Date</FormLabel><FormControl><Input type="date" data-testid="input-course-start-date" {...field} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>تاريخ البدء</FormLabel><FormControl><Input type="date" data-testid="input-course-start-date" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
                 <FormField control={form.control} name="endDate" render={({ field }) => (
-                  <FormItem><FormLabel>End Date</FormLabel><FormControl><Input type="date" data-testid="input-course-end-date" {...field} /></FormControl><FormMessage /></FormItem>
+                  <FormItem><FormLabel>تاريخ الانتهاء</FormLabel><FormControl><Input type="date" data-testid="input-course-end-date" {...field} /></FormControl><FormMessage /></FormItem>
                 )} />
               </div>
               <FormField control={form.control} name="published" render={({ field }) => (
                 <FormItem className="flex items-center justify-between rounded-lg border border-border p-3">
-                  <FormLabel className="mb-0">Published</FormLabel>
+                  <FormLabel className="mb-0">نشر الكورس</FormLabel>
                   <FormControl><Switch checked={field.value} onCheckedChange={field.onChange} data-testid="switch-course-published" /></FormControl>
                 </FormItem>
               )} />
               <DialogFooter className="pt-2">
-                <Button type="button" variant="outline" onClick={() => setOpen(false)}>Cancel</Button>
-                <Button type="submit" disabled={isPending} data-testid="button-save-course">{isPending ? "Saving..." : "Save Course"}</Button>
+                <Button type="button" variant="outline" onClick={() => setOpen(false)}>إلغاء</Button>
+                <Button type="submit" disabled={isPending} data-testid="button-save-course">{isPending ? "جاري الحفظ..." : "حفظ الكورس"}</Button>
               </DialogFooter>
             </form>
           </Form>

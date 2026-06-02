@@ -1,8 +1,7 @@
 import { Link, useLocation } from "wouter";
 import { useGetMe, getGetMeQueryKey, useLogout } from "@workspace/api-client-react";
-import { Button } from "@/components/ui/button";
 import { useQueryClient } from "@tanstack/react-query";
-import { Menu, X, TerminalSquare } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 
 export function Navbar() {
@@ -17,91 +16,89 @@ export function Navbar() {
       onSuccess: () => {
         queryClient.setQueryData(getGetMeQueryKey(), null);
         window.location.href = "/";
-      }
+      },
     });
   };
 
-  const NavLinks = () => (
-    <>
-      <Link href="/courses" className={`text-sm font-medium transition-colors hover:text-primary ${location.startsWith('/courses') ? 'text-primary' : 'text-muted-foreground'}`}>
-        Courses
-      </Link>
-      {user && user.role === 'admin' && (
-        <Link href="/admin" className={`text-sm font-medium transition-colors hover:text-primary ${location.startsWith('/admin') ? 'text-primary' : 'text-muted-foreground'}`}>
-          Admin Panel
-        </Link>
-      )}
-      {user && user.role === 'user' && (
-        <Link href="/dashboard" className={`text-sm font-medium transition-colors hover:text-primary ${location.startsWith('/dashboard') ? 'text-primary' : 'text-muted-foreground'}`}>
-          Dashboard
-        </Link>
-      )}
-    </>
-  );
-
   return (
-    <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-border">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6 md:gap-10">
-          <Link href="/" className="flex items-center space-x-2">
-            <TerminalSquare className="h-6 w-6 text-primary" />
-            <span className="font-bold inline-block text-lg tracking-tight uppercase">ALGHWARI</span>
-          </Link>
-          <div className="hidden md:flex gap-6">
-            <NavLinks />
-          </div>
-        </div>
-        
-        <div className="flex items-center gap-4">
-          <div className="hidden md:flex items-center gap-4">
+    <nav className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur border-b border-border">
+      <div className="max-w-2xl mx-auto px-5 h-14 flex items-center justify-between">
+        {/* Hamburger — right in RTL (visually left) */}
+        <button
+          className="text-foreground/70 hover:text-foreground transition-colors"
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label="القائمة"
+          data-testid="button-menu-toggle"
+        >
+          {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
+
+        {/* Brand — left in RTL (visually right) */}
+        <Link href="/" className="text-end">
+          <div className="text-[10px] text-muted-foreground tracking-widest uppercase leading-none">C. Maryam Alghwari</div>
+          <div className="text-lg font-bold leading-tight">مريم الجهوري</div>
+        </Link>
+      </div>
+
+      {/* Mobile drawer */}
+      {isMenuOpen && (
+        <div className="border-t border-border bg-background">
+          <div className="max-w-2xl mx-auto px-5 py-4 flex flex-col gap-1">
+            <Link
+              href="/"
+              onClick={() => setIsMenuOpen(false)}
+              className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${location === "/" ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"}`}
+            >
+              الرئيسية
+            </Link>
+            <Link
+              href="/courses"
+              onClick={() => setIsMenuOpen(false)}
+              className={`px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${location.startsWith("/courses") ? "bg-primary/10 text-primary" : "text-foreground hover:bg-muted"}`}
+            >
+              الكورسات
+            </Link>
+            {user?.role === "admin" && (
+              <>
+                <Link href="/admin" onClick={() => setIsMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                  لوحة التحكم
+                </Link>
+                <Link href="/admin/courses" onClick={() => setIsMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                  إدارة الكورسات
+                </Link>
+                <Link href="/admin/bookings" onClick={() => setIsMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                  إدارة الحجوزات
+                </Link>
+              </>
+            )}
+            {user?.role === "user" && (
+              <Link href="/dashboard" onClick={() => setIsMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors">
+                حجوزاتي
+              </Link>
+            )}
+
+            <div className="h-px bg-border my-1" />
+
             {!isLoading && (
               user ? (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center justify-between px-3 py-2">
                   <span className="text-sm text-muted-foreground">{user.name}</span>
-                  <Button variant="outline" size="sm" onClick={handleLogout}>Logout</Button>
+                  <button onClick={handleLogout} className="text-sm text-destructive hover:underline" data-testid="button-logout">
+                    تسجيل الخروج
+                  </button>
                 </div>
               ) : (
-                <>
-                  <Link href="/login" className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors">Login</Link>
-                  <Button asChild size="sm">
-                    <Link href="/register">Get Started</Link>
-                  </Button>
-                </>
+                <div className="flex flex-col gap-1">
+                  <Link href="/login" onClick={() => setIsMenuOpen(false)} className="px-3 py-2.5 rounded-lg text-sm font-medium text-foreground hover:bg-muted transition-colors" data-testid="link-login">
+                    تسجيل الدخول
+                  </Link>
+                  <Link href="/register" onClick={() => setIsMenuOpen(false)} className="mx-3 mt-1 px-4 py-2.5 rounded-full bg-primary text-white text-sm font-medium text-center" data-testid="link-register">
+                    إنشاء حساب
+                  </Link>
+                </div>
               )
             )}
           </div>
-          
-          <button 
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-      </div>
-      
-      {/* Mobile Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden border-t border-border bg-background p-4 flex flex-col gap-4">
-          <NavLinks />
-          <div className="h-px bg-border my-2" />
-          {!isLoading && (
-            user ? (
-              <div className="flex flex-col gap-4">
-                <span className="text-sm text-muted-foreground">{user.name}</span>
-                <Button variant="outline" onClick={handleLogout} className="w-full justify-start">Logout</Button>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-4">
-                <Button variant="outline" asChild className="w-full justify-start">
-                  <Link href="/login">Login</Link>
-                </Button>
-                <Button asChild className="w-full justify-start">
-                  <Link href="/register">Get Started</Link>
-                </Button>
-              </div>
-            )
-          )}
         </div>
       )}
     </nav>

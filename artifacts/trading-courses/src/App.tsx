@@ -23,7 +23,14 @@ function ProtectedRoute({ component: Component, role }: { component: any, role?:
   const [, setLocation] = useLocation();
 
   if (isLoading) {
-    return <div className="min-h-screen flex items-center justify-center text-primary">Loading terminal...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-xs tracking-[0.3em] uppercase text-primary font-medium mb-2">C. MARYAM ALGHWARI</p>
+          <p className="text-muted-foreground text-sm">جاري التحميل...</p>
+        </div>
+      </div>
+    );
   }
 
   if (!user) {

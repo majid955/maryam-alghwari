@@ -1,15 +1,20 @@
 import { useParams, useLocation } from "wouter";
 import { useGetCourse, getGetCourseQueryKey, useCreateBooking, useGetMe, getGetMeQueryKey, getGetMyBookingsQueryKey } from "@workspace/api-client-react";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { Clock, Users, Calendar, ChevronLeft, CheckCircle } from "lucide-react";
+import { ChevronRight, Clock, Users, Calendar, CheckCircle } from "lucide-react";
+
+const levelLabels: Record<string, string> = {
+  beginner: "مبتدئ",
+  intermediate: "متوسط",
+  advanced: "متقدم",
+};
 
 const levelColors: Record<string, string> = {
-  beginner: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  intermediate: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  advanced: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+  beginner: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  intermediate: "bg-amber-50 text-amber-700 border-amber-200",
+  advanced: "bg-rose-50 text-rose-700 border-rose-200",
 };
 
 export default function CourseDetail() {
@@ -35,11 +40,11 @@ export default function CourseDetail() {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: getGetMyBookingsQueryKey() });
-          toast({ title: "Booking confirmed", description: "Your booking is pending confirmation from the admin." });
+          toast({ title: "تم الحجز بنجاح", description: "طلب حجزك قيد المراجعة وسيتم تأكيده قريباً." });
           setLocation("/dashboard");
         },
         onError: (err: any) => {
-          toast({ title: "Booking failed", description: err?.data?.error ?? "Could not book this course.", variant: "destructive" });
+          toast({ title: "خطأ في الحجز", description: err?.data?.error ?? "تعذّر إتمام الحجز.", variant: "destructive" });
         },
       }
     );
@@ -47,116 +52,113 @@ export default function CourseDetail() {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto max-w-4xl px-4 py-12">
-        <Skeleton className="h-8 w-48 mb-6" />
-        <Skeleton className="h-10 w-3/4 mb-4" />
-        <Skeleton className="h-24 w-full mb-8" />
-        <div className="grid md:grid-cols-3 gap-4">
-          <Skeleton className="h-20" />
-          <Skeleton className="h-20" />
-          <Skeleton className="h-20" />
-        </div>
+      <div className="max-w-2xl mx-auto px-5 py-10">
+        <Skeleton className="h-6 w-32 mb-6" />
+        <Skeleton className="h-8 w-3/4 mb-3" />
+        <Skeleton className="h-20 mb-6" />
+        <Skeleton className="h-40 rounded-2xl" />
       </div>
     );
   }
 
   if (!course) {
     return (
-      <div className="container mx-auto max-w-4xl px-4 py-12 text-center text-muted-foreground">
-        Course not found.
+      <div className="max-w-2xl mx-auto px-5 py-16 text-center text-muted-foreground">
+        الكورس غير موجود
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto max-w-4xl px-4 py-12">
+    <div className="max-w-2xl mx-auto px-5 py-10">
       <button
         onClick={() => setLocation("/courses")}
-        className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors mb-8"
-        data-testid="button-back-to-courses"
+        className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors mb-6"
+        data-testid="button-back"
       >
-        <ChevronLeft className="h-4 w-4" /> Back to Courses
+        <ChevronRight className="h-4 w-4" />
+        العودة للكورسات
       </button>
 
-      <div className="grid md:grid-cols-3 gap-10">
-        <div className="md:col-span-2">
-          <div className="flex items-center gap-3 mb-4">
-            <span className={`text-xs font-medium px-2.5 py-1 rounded-full border capitalize ${levelColors[course.level]}`}>
-              {course.level}
-            </span>
-          </div>
-          <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
-          <p className="text-muted-foreground leading-relaxed mb-8">{course.description}</p>
+      <div className="flex items-start justify-between mb-4">
+        <span className={`text-xs px-2.5 py-1 rounded-full border font-medium ${levelColors[course.level]}`}>
+          {levelLabels[course.level] ?? course.level}
+        </span>
+        <span className="text-2xl font-bold text-primary">${course.price}</span>
+      </div>
 
-          <h2 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">Course Details</h2>
-          <div className="grid sm:grid-cols-2 gap-4">
-            {[
-              { icon: Clock, label: "Duration", value: course.duration },
-              { icon: Users, label: "Seats Available", value: `${course.seatsAvailable} of ${course.seats}` },
-              ...(course.startDate ? [{ icon: Calendar, label: "Start Date", value: new Date(course.startDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) }] : []),
-              ...(course.endDate ? [{ icon: Calendar, label: "End Date", value: new Date(course.endDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) }] : []),
-            ].map(({ icon: Icon, label, value }) => (
-              <div key={label} className="flex items-center gap-3 p-4 rounded-lg border border-border bg-card/50">
-                <Icon className="h-4 w-4 text-primary shrink-0" />
-                <div>
-                  <p className="text-xs text-muted-foreground">{label}</p>
-                  <p className="text-sm font-medium">{value}</p>
-                </div>
-              </div>
-            ))}
-          </div>
+      <h1 className="text-2xl font-extrabold mb-3">{course.title}</h1>
+      <p className="text-muted-foreground text-sm leading-relaxed mb-6">{course.description}</p>
 
-          <div className="mt-8">
-            <h2 className="font-semibold mb-4 text-sm uppercase tracking-wider text-muted-foreground">What You Will Learn</h2>
-            <div className="space-y-2">
-              {["Practical market analysis techniques", "Risk management and position sizing", "Entry and exit strategy frameworks", "Psychology and discipline for consistent performance"].map((item) => (
-                <div key={item} className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-primary shrink-0" />
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
+      {/* Details */}
+      <div className="grid grid-cols-2 gap-3 mb-6">
+        <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
+          <Clock className="h-4 w-4 text-primary shrink-0" />
+          <div>
+            <p className="text-xs text-muted-foreground">المدة</p>
+            <p className="text-sm font-medium">{course.duration}</p>
           </div>
         </div>
-
-        {/* Booking Card */}
-        <div className="md:col-span-1">
-          <div className="border border-border rounded-lg bg-card p-6 sticky top-24">
-            <div className="text-3xl font-bold text-primary mb-1">${course.price}</div>
-            <p className="text-xs text-muted-foreground mb-6">One-time enrollment fee</p>
-
-            {course.seatsAvailable === 0 ? (
-              <div className="text-center py-3 rounded-lg bg-destructive/10 text-destructive text-sm font-medium border border-destructive/20">
-                Fully Booked
-              </div>
-            ) : (
-              <Button
-                className="w-full"
-                onClick={handleBook}
-                disabled={bookMutation.isPending}
-                data-testid="button-book-course"
-              >
-                {bookMutation.isPending ? "Booking..." : user ? "Book This Course" : "Login to Book"}
-              </Button>
-            )}
-
-            <div className="mt-6 pt-6 border-t border-border space-y-3 text-sm">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Level</span>
-                <span className="capitalize font-medium">{course.level}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Duration</span>
-                <span className="font-medium">{course.duration}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Seats left</span>
-                <span className="font-medium">{course.seatsAvailable}</span>
-              </div>
+        <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
+          <Users className="h-4 w-4 text-primary shrink-0" />
+          <div>
+            <p className="text-xs text-muted-foreground">المقاعد المتبقية</p>
+            <p className="text-sm font-medium">{course.seatsAvailable} / {course.seats}</p>
+          </div>
+        </div>
+        {course.startDate && (
+          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
+            <Calendar className="h-4 w-4 text-primary shrink-0" />
+            <div>
+              <p className="text-xs text-muted-foreground">تاريخ البدء</p>
+              <p className="text-sm font-medium">{new Date(course.startDate).toLocaleDateString("ar-SA")}</p>
             </div>
           </div>
+        )}
+        {course.endDate && (
+          <div className="bg-card rounded-xl border border-border p-4 flex items-center gap-3">
+            <Calendar className="h-4 w-4 text-primary shrink-0" />
+            <div>
+              <p className="text-xs text-muted-foreground">تاريخ الانتهاء</p>
+              <p className="text-sm font-medium">{new Date(course.endDate).toLocaleDateString("ar-SA")}</p>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* What you'll learn */}
+      <div className="bg-card rounded-2xl border border-border p-5 mb-6">
+        <h2 className="font-bold mb-4">ماذا ستتعلمين</h2>
+        <div className="flex flex-col gap-3">
+          {[
+            "تقنيات تحليل السوق العملية",
+            "إدارة المخاطر وتحديد حجم المراكز",
+            "استراتيجيات الدخول والخروج",
+            "بناء نظام التداول الخاص بك",
+          ].map((item) => (
+            <div key={item} className="flex items-center gap-2.5 text-sm">
+              <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+              <span>{item}</span>
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Book button */}
+      {course.seatsAvailable === 0 ? (
+        <div className="w-full py-3.5 rounded-full bg-muted text-muted-foreground text-center font-medium text-sm">
+          الكورس ممتلئ
+        </div>
+      ) : (
+        <button
+          onClick={handleBook}
+          disabled={bookMutation.isPending}
+          className="w-full bg-primary text-white py-3.5 rounded-full font-bold text-base hover:opacity-90 transition-opacity disabled:opacity-60"
+          data-testid="button-book-course"
+        >
+          {bookMutation.isPending ? "جاري الحجز..." : user ? "✦ احجزي الآن" : "✦ سجّلي للحجز"}
+        </button>
+      )}
     </div>
   );
 }

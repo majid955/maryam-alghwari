@@ -3,19 +3,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Link, useLocation } from "wouter";
 import { useRegister, getGetMeQueryKey } from "@workspace/api-client-react";
-import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useQueryClient } from "@tanstack/react-query";
 import { useToast } from "@/hooks/use-toast";
-import { TerminalSquare } from "lucide-react";
 
 const schema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Enter a valid email"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  name: z.string().min(2, "الاسم يجب أن يكون حرفين على الأقل"),
+  email: z.string().email("أدخلي بريدًا إلكترونيًا صحيحًا"),
+  password: z.string().min(6, "كلمة المرور 6 أحرف على الأقل"),
 });
-
 type FormData = z.infer<typeof schema>;
 
 export default function Register() {
@@ -38,32 +35,32 @@ export default function Register() {
           setLocation("/courses");
         },
         onError: (err: any) => {
-          toast({ title: "Registration failed", description: err?.data?.error ?? "Could not create account.", variant: "destructive" });
+          toast({ title: "خطأ في إنشاء الحساب", description: err?.data?.error ?? "تعذّر إنشاء الحساب.", variant: "destructive" });
         },
       }
     );
   };
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex items-center justify-center px-4 py-12">
-      <div className="w-full max-w-md">
+    <div className="max-w-2xl mx-auto px-5 py-12 flex flex-col items-center">
+      <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <TerminalSquare className="h-10 w-10 text-primary mx-auto mb-4" />
-          <h1 className="text-2xl font-bold">Create your account</h1>
-          <p className="text-muted-foreground text-sm mt-1">Join Maryam Alghwari Trading Academy</p>
+          <p className="text-xs tracking-[0.3em] uppercase text-primary font-medium mb-1">C. MARYAM ALGHWARI</p>
+          <h1 className="text-2xl font-extrabold">إنشاء حساب جديد</h1>
+          <p className="text-muted-foreground text-sm mt-1">انضمي لأكاديمية مريم الجهوري</p>
         </div>
 
-        <div className="border border-border rounded-xl bg-card p-8">
+        <div className="bg-card rounded-2xl border border-border p-6 shadow-sm">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
               <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel className="text-sm">الاسم الكامل</FormLabel>
                     <FormControl>
-                      <Input placeholder="Your name" data-testid="input-name" {...field} />
+                      <Input placeholder="اكتبي اسمك هنا" className="bg-muted/50" data-testid="input-name" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -74,9 +71,9 @@ export default function Register() {
                 name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Email</FormLabel>
+                    <FormLabel className="text-sm">البريد الإلكتروني</FormLabel>
                     <FormControl>
-                      <Input type="email" placeholder="you@example.com" data-testid="input-email" {...field} />
+                      <Input type="email" placeholder="example@email.com" className="bg-muted/50" data-testid="input-email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -87,24 +84,29 @@ export default function Register() {
                 name="password"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Password</FormLabel>
+                    <FormLabel className="text-sm">كلمة المرور</FormLabel>
                     <FormControl>
-                      <Input type="password" placeholder="At least 6 characters" data-testid="input-password" {...field} />
+                      <Input type="password" placeholder="6 أحرف على الأقل" className="bg-muted/50" data-testid="input-password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full" disabled={registerMutation.isPending} data-testid="button-submit-register">
-                {registerMutation.isPending ? "Creating account..." : "Create Account"}
-              </Button>
+              <button
+                type="submit"
+                disabled={registerMutation.isPending}
+                className="w-full bg-primary text-white py-3 rounded-full font-bold text-sm hover:opacity-90 transition-opacity disabled:opacity-60 mt-1"
+                data-testid="button-submit-register"
+              >
+                {registerMutation.isPending ? "جاري إنشاء الحساب..." : "✦ إنشاء الحساب"}
+              </button>
             </form>
           </Form>
 
-          <div className="mt-4 text-center text-sm text-muted-foreground border-t border-border pt-4">
-            Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline font-medium">
-              Sign in
+          <div className="mt-5 pt-4 border-t border-border text-center text-sm text-muted-foreground">
+            لديك حساب بالفعل؟{" "}
+            <Link href="/login" className="text-primary font-medium hover:underline">
+              تسجيل الدخول
             </Link>
           </div>
         </div>
