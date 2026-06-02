@@ -361,6 +361,30 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
 .why-num{font-family:var(--font-serif);font-size:5rem;font-weight:700;line-height:1;background:linear-gradient(135deg,var(--gold),var(--rose-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:.3rem}
 .why-num-label{font-family:var(--font-ar);font-size:.8rem;color:var(--text-mid);text-align:center;line-height:1.55;padding:0 1.5rem;direction:rtl}
 
+/* ── Instagram / Content Section ────────────────────────────── */
+.insta-section{background:var(--beige);padding:100px 5%}
+.insta-header{text-align:center;max-width:520px;margin:0 auto 52px;direction:rtl}
+.insta-header-title{font-family:var(--font-ar);font-size:2.2rem;font-weight:900;color:var(--text);line-height:1.2;margin:.35rem 0 .75rem}
+.insta-header-line{width:60px;height:2px;background:linear-gradient(to left,var(--rose),var(--gold));border-radius:2px;margin:.75rem auto 1.1rem}
+.insta-header-desc{font-size:.9rem;color:var(--text-muted);line-height:1.8}
+.insta-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;max-width:1100px;margin:0 auto}
+@media(max-width:900px){.insta-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.insta-grid{grid-template-columns:repeat(2,1fr);gap:10px}}
+.insta-card{position:relative;aspect-ratio:1/1;border-radius:20px;background:linear-gradient(145deg,var(--nude),var(--warm-white));border:1px solid rgba(196,169,107,.15);overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s}
+.insta-card:hover{transform:scale(1.03);box-shadow:0 20px 50px rgba(44,36,32,.14)}
+.insta-card-default{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.75rem;transition:opacity .25s}
+.insta-card:hover .insta-card-default{opacity:0}
+.insta-card-emoji{font-size:2.8rem;line-height:1}
+.insta-card-label{font-family:var(--font-ar);font-size:.88rem;font-weight:700;color:var(--text-mid);direction:rtl}
+.insta-card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(28,18,14,.78) 0%,rgba(28,18,14,.18) 60%,transparent 100%);opacity:0;transition:opacity .25s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:1.4rem}
+.insta-card:hover .insta-card-overlay{opacity:1}
+.insta-card-overlay-label{font-family:var(--font-ar);font-size:.88rem;font-weight:700;color:#fff;direction:rtl;text-align:center;transform:translateY(6px);transition:transform .25s}
+.insta-card:hover .insta-card-overlay-label{transform:translateY(0)}
+.insta-badge{position:absolute;top:12px;right:12px;background:rgba(196,169,107,.18);color:var(--gold-dk);border:1px solid rgba(196,169,107,.3);border-radius:var(--radius-pill);padding:.18rem .65rem;font-family:var(--font-ar);font-size:.68rem;font-weight:600;direction:rtl;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.insta-cta-wrap{text-align:center;margin-top:40px}
+.insta-cta{display:inline-flex;align-items:center;gap:.6rem;background:transparent;border:1.5px solid var(--gold);color:var(--gold-dk);font-family:var(--font-ar);font-size:.95rem;font-weight:700;padding:.75rem 2rem;border-radius:var(--radius-pill);cursor:pointer;transition:background .2s,color .2s,box-shadow .2s;direction:rtl}
+.insta-cta:hover{background:var(--gold);color:#fff;box-shadow:0 6px 20px rgba(196,169,107,.35)}
+
 /* ── Utils ── */
 .text-gold{color:var(--gold)}
 .text-muted{color:var(--text-muted)}
@@ -710,6 +734,63 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
         </div>
       </div>
 
+    </div>
+  </section>
+
+  <!-- ══ Instagram / Content Preview ══ -->
+  <section class="insta-section" id="testimonials">
+    <div class="insta-header">
+      <p class="section-label">Content</p>
+      <h2 class="insta-header-title">محتوى يُفيد ويُلهم</h2>
+      <div class="insta-header-line"></div>
+      <p class="insta-header-desc">أشارك يومياً تحليلات السوق، نصائح التداول، ومحتوى يبني وعيك المالي خطوة بخطوة</p>
+    </div>
+    <div class="insta-grid">
+      <div class="insta-card">
+        <span class="insta-badge">تحليل</span>
+        <div class="insta-card-default">
+          <span class="insta-card-emoji">📊</span>
+          <span class="insta-card-label">تحليل السوق اليومي</span>
+        </div>
+        <div class="insta-card-overlay">
+          <span class="insta-card-overlay-label">تحليل السوق اليومي</span>
+        </div>
+      </div>
+      <div class="insta-card">
+        <span class="insta-badge">تعليمي</span>
+        <div class="insta-card-default">
+          <span class="insta-card-emoji">💡</span>
+          <span class="insta-card-label">نصائح التداول</span>
+        </div>
+        <div class="insta-card-overlay">
+          <span class="insta-card-overlay-label">نصائح التداول</span>
+        </div>
+      </div>
+      <div class="insta-card">
+        <span class="insta-badge">ريلز</span>
+        <div class="insta-card-default">
+          <span class="insta-card-emoji">📱</span>
+          <span class="insta-card-label">ريلز تعليمية</span>
+        </div>
+        <div class="insta-card-overlay">
+          <span class="insta-card-overlay-label">ريلز تعليمية</span>
+        </div>
+      </div>
+      <div class="insta-card">
+        <span class="insta-badge">وعي</span>
+        <div class="insta-card-default">
+          <span class="insta-card-emoji">🌿</span>
+          <span class="insta-card-label">الوعي المالي</span>
+        </div>
+        <div class="insta-card-overlay">
+          <span class="insta-card-overlay-label">الوعي المالي</span>
+        </div>
+      </div>
+    </div>
+    <div class="insta-cta-wrap">
+      <button class="insta-cta" onclick="window.open('https://instagram.com','_blank')">
+        <span>📸</span> تابعيني على انستغرام
+      </button>
     </div>
   </section>
 
