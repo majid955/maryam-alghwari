@@ -294,6 +294,14 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
 .sf-tagline{font-family:var(--font-serif);font-style:italic;font-size:.82rem;color:rgba(196,169,107,.5);text-align:left}
 @media(max-width:540px){.sf-bottom{flex-direction:column;align-items:flex-end;gap:8px}}
 
+/* ── Scroll Reveal ───────────────────────────────────────────── */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .65s ease,transform .65s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+
 /* ── About Section ────────────────────────────────────────────── */
 .about-section{background:var(--beige);padding:100px 5%}
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;max-width:1100px;margin:0 auto}
@@ -929,14 +937,14 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
       <p class="ps-desc">خدمات حصرية مصممة لمن يريد الانتقال إلى مستوى أعلى في رحلته المالية والاستثمارية</p>
     </div>
     <div class="ps-grid">
-      <div class="ps-card" onclick="document.getElementById('fundsModal').classList.add('open')">
+      <div class="ps-card" onclick="openModal('fundsModal')">
         <span class="ps-card-arrow">↗</span>
         <span class="ps-card-icon">💰</span>
         <div class="ps-card-title">الصناديق الاستثمارية</div>
         <p class="ps-card-desc">صناديق استثمارية مدارة باحترافية بعوائد شهرية منتظمة وشفافية كاملة ورقابة مستمرة على محفظتك</p>
         <button class="ps-card-cta">✦ اكتشف الصناديق</button>
       </div>
-      <div class="ps-card" onclick="document.getElementById('coursesModal').classList.add('open')">
+      <div class="ps-card" onclick="openModal('coursesModal')">
         <span class="ps-card-arrow">↗</span>
         <span class="ps-card-icon">🎓</span>
         <div class="ps-card-title">الكورسات والتسجيل</div>
@@ -947,7 +955,7 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
   </section>
 
   <!-- ══ Modal: Investment Funds ══ -->
-  <div class="ps-modal" id="fundsModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="ps-modal" id="fundsModal" onclick="handleOverlayClick(event,'fundsModal')">
     <div class="ps-modal-box">
       <div class="ps-modal-head">
         <div class="ps-modal-head-info">
@@ -957,7 +965,7 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
             <div class="ps-modal-head-sub">عوائد شهرية منتظمة بإدارة احترافية</div>
           </div>
         </div>
-        <button class="ps-modal-close" onclick="document.getElementById('fundsModal').classList.remove('open')">✕</button>
+        <button class="ps-modal-close" onclick="closeModal('fundsModal')">✕</button>
       </div>
       <div class="ps-modal-body">
         <div class="fund-intro">✨ رسوم الأداء <strong>1٪ فقط</strong> — ويتم خصمها فقط عند انتهاء مدة الصندوق</div>
@@ -1000,7 +1008,7 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
   </div>
 
   <!-- ══ Modal: Courses ══ -->
-  <div class="ps-modal" id="coursesModal" onclick="if(event.target===this)this.classList.remove('open')">
+  <div class="ps-modal" id="coursesModal" onclick="handleOverlayClick(event,'coursesModal')">
     <div class="ps-modal-box">
       <div class="ps-modal-head">
         <div class="ps-modal-head-info">
@@ -1010,7 +1018,7 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
             <div class="ps-modal-head-sub">برنامج تداول احترافي متكامل</div>
           </div>
         </div>
-        <button class="ps-modal-close" onclick="document.getElementById('coursesModal').classList.remove('open')">✕</button>
+        <button class="ps-modal-close" onclick="closeModal('coursesModal')">✕</button>
       </div>
       <div class="ps-modal-body">
         <div class="course-hero">
@@ -1281,8 +1289,21 @@ function renderDrawerAuth() {
 }
 
 /* ── Modal ── */
-function openModal(id) {document.getElementById(id).classList.add('open');}
-function closeModal(id) {document.getElementById(id).classList.remove('open');}
+function openModal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('open');
+  if (!document.querySelector('.modal.open, .ps-modal.open')) document.body.style.overflow = '';
+}
+function handleOverlayClick(e, id) {
+  if (e.target === e.currentTarget) closeModal(id);
+}
 
 /* ── Router ── */
 function navigate(view, param) {
@@ -1542,10 +1563,51 @@ function handleContactForm() {
     document.getElementById('cService').selectedIndex = 0;
   }, 3000);
 }
-/* ESC closes modals */
+/* ── ESC closes any open modal ── */
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.ps-modal.open').forEach(m => m.classList.remove('open'));
+  if (e.key !== 'Escape') return;
+  document.querySelectorAll('.modal.open, .ps-modal.open').forEach(m => closeModal(m.id));
 });
+
+/* ── Smooth scroll for anchor links ── */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const target = document.getElementById(id);
+    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+/* ── Scroll reveal (IntersectionObserver) ── */
+(function initReveal() {
+  const revealTargets = [
+    '#about .about-grid > *',
+    '#about .stat-card',
+    '#services .svc-card',
+    '#why .why-item',
+    '#why .why-visual',
+    '#testimonials .insta-card',
+    '#private-services .ps-card',
+    '#bookingSection .contact-info-hd',
+    '#bookingSection .contact-items-list',
+    '#bookingSection .contact-form-card',
+    '.site-footer .sf-top > div'
+  ];
+  const delays = ['reveal-delay-1','reveal-delay-2','reveal-delay-3','reveal-delay-4'];
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, {threshold: 0.12, rootMargin: '0px 0px -40px 0px'});
+
+  revealTargets.forEach(sel => {
+    document.querySelectorAll(sel).forEach((el, i) => {
+      el.classList.add('reveal');
+      if (i < 4) el.classList.add(delays[i]);
+      observer.observe(el);
+    });
+  });
+})();
 
 /* ── Admin ── */
 function adminTab(btn, id) {
