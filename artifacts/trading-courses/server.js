@@ -38,11 +38,13 @@ http.createServer((req, res) => {
     }
   }
 
-  // Serve index.html for everything else
+  // Serve index.html for everything else (inject booking endpoint from env)
   fs.readFile(HTML, (err, data) => {
     if (err) { res.writeHead(500); res.end('Error'); return; }
+    const endpoint = (process.env.BOOKING_SHEET_URL || '').replace(/["'\\\r\n<]/g, '');
+    const html = data.toString().replace('__BOOKING_ENDPOINT__', endpoint);
     res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
-    res.end(data);
+    res.end(html);
   });
 }).listen(PORT, '0.0.0.0', () => {
   console.log('Server running on port ' + PORT);

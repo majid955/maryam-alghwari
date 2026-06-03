@@ -1065,7 +1065,7 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
         <div class="cform-title">أرسل طلبك</div>
         <div class="cform-stack">
           <input class="cform-inp" type="text" id="cName" placeholder="الاسم الكامل" required>
-          <input class="cform-inp" type="tel" id="cPhone" placeholder="+966 5X XXX XXXX" dir="ltr" style="text-align:right" required>
+          <input class="cform-inp" type="tel" id="cPhone" placeholder="+968 9XXX XXXX" dir="ltr" style="text-align:right" required>
           <select class="cform-sel" id="cService" required>
             <option value="" disabled selected>اختاري الخدمة المناسبة</option>
             <option value="fund-1">خطة A (1,000$)</option>
@@ -1503,16 +1503,70 @@ function scrollToForm() {
   setTimeout(() => document.getElementById('bookingSection').scrollIntoView({behavior:'smooth'}), 100);
 }
 /* ── Contact form ── */
-function handleContactForm() {
-  const name    = document.getElementById('cName').value.trim();
-  const phone   = document.getElementById('cPhone').value.trim();
-  const service = document.getElementById('cService').value;
-  const message = document.getElementById('cMessage').value.trim();
-  if (!name || !phone || !service) { toast('يرجى تعبئة جميع الحقول المطلوبة','error'); return; }
-  const text = `الاسم: ${name}\nرقم الهاتف: ${phone}\nنوع الخدمه: ${service}${message ? '\nاستفسارات اخرى: ' + message : ''}\n\nشكراً`;
-  window.open('https://wa.me/96895036660?text=' + encodeURIComponent(text), '_blank');
-  ['cName','cPhone','cMessage'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('cService').selectedIndex = 0;
+/* ── Booking form → Google Sheets + email (via Google Apps Script) ── */
+const BOOKING_ENDPOINT = "__BOOKING_ENDPOINT__";
+const SERVICE_LABELS = {
+  'fund-1':'خطة A (1,000$)',
+  'fund-2':'خطة B (5,000$)',
+  'fund-3':'خطة C (50,000$)',
+  'courses':'الكورسات والتسجيل',
+  'consulting':'الاستشارة الخاصة',
+  'other':'أخرى'
+};
+function normalizeOmanPhone(raw) {
+  let d = (raw || '').replace(/[^\d+]/g, '');
+  d = d.replace(/^\+/, '');
+  if (d.indexOf('00968') === 0) d = d.slice(5);
+  else if (d.indexOf('968') === 0 && d.length > 8) d = d.slice(3);
+  return d;
+}
+async function handleContactForm() {
+  const name     = document.getElementById('cName').value.trim();
+  const phoneRaw = document.getElementById('cPhone').value.trim();
+  const service  = document.getElementById('cService').value;
+  const message  = document.getElementById('cMessage').value.trim();
+  const btn      = document.getElementById('cSubmitBtn');
+
+  if (!name || !phoneRaw || !service) {
+    toast('يرجى تعبئة الاسم ورقم الهاتف واختيار الخدمة','error');
+    return;
+  }
+  const local = normalizeOmanPhone(phoneRaw);
+  if (!/^[79]\d{7}$/.test(local)) {
+    toast('رقم هاتف عُماني غير صحيح — أدخل رقماً من 8 أرقام يبدأ بـ 7 أو 9','error');
+    return;
+  }
+  const phone = '+968 ' + local;
+  const serviceLabel = SERVICE_LABELS[service] || service;
+
+  if (!BOOKING_ENDPOINT || BOOKING_ENDPOINT.indexOf('__') === 0) {
+    toast('لم يتم ربط نموذج الطلبات بعد. يرجى المحاولة لاحقاً أو التواصل عبر واتساب','error');
+    return;
+  }
+
+  const orig = btn.textContent;
+  btn.disabled = true;
+  btn.textContent = 'جارٍ الإرسال...';
+  try {
+    const res = await fetch(BOOKING_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ name, phone, service: serviceLabel, message })
+    });
+    const data = await res.json().catch(() => ({ ok: res.ok }));
+    if (!data.ok) throw new Error(data.error || 'fail');
+
+    btn.classList.add('success');
+    btn.textContent = '✓ تم استلام طلبك';
+    toast('تم استلام طلبك بنجاح، سنتواصل معك قريباً','success');
+    ['cName','cPhone','cMessage'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('cService').selectedIndex = 0;
+    setTimeout(() => { btn.classList.remove('success'); btn.textContent = orig; btn.disabled = false; }, 3500);
+  } catch (err) {
+    toast('تعذّر إرسال الطلب، يرجى المحاولة مرة أخرى','error');
+    btn.disabled = false;
+    btn.textContent = orig;
+  }
 }
 /* ── ESC closes any open modal ── */
 document.addEventListener('keydown', e => {

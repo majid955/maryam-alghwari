@@ -1,0 +1,1 @@
+- [Trading-courses booking form flow](booking-form-flow.md) — form POSTs to Google Apps Script (Sheets+email); text/plain avoids CORS preflight; URL injected via server.js env BOOKING_SHEET_URL.
