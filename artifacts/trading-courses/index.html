@@ -1038,9 +1038,9 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
       <div>
         <div class="contact-info-hd">
           <p class="section-label">Booking</p>
-          <h2 class="contact-info-title">احجزي استشارتك الآن</h2>
+          <h2 class="contact-info-title">احجز استشارتك الآن</h2>
           <div class="contact-info-hline"></div>
-          <p class="contact-info-sub">تواصلي معي عبر أي من قنوات التواصل أو أرسلي طلبك مباشرةً وسأرد عليك في أقرب وقت ممكن</p>
+          <p class="contact-info-sub">تواصلي معي عبر أي من قنوات التواصل أو أرسل طلبك مباشرةً وسأرد عليك في أقرب وقت ممكن</p>
         </div>
         <div class="contact-items-list">
           <div class="contact-ci">
@@ -1062,7 +1062,7 @@ body{font-family:var(--font-ar);background:var(--warm-white);color:var(--text);d
         </div>
       </div>
       <div class="contact-form-card">
-        <div class="cform-title">أرسلي طلبك</div>
+        <div class="cform-title">أرسل طلبك</div>
         <div class="cform-stack">
           <input class="cform-inp" type="text" id="cName" placeholder="الاسم الكامل" required>
           <input class="cform-inp" type="tel" id="cPhone" placeholder="+966 5X XXX XXXX" dir="ltr" style="text-align:right" required>
@@ -1427,7 +1427,7 @@ function renderBookBtn(course) {
   } else if (!S.user) {
     el.innerHTML = `<button class="btn btn-primary btn-full" onclick="openModal('loginModal')">✦ سجّلي للحجز</button>`;
   } else {
-    el.innerHTML = `<button class="btn btn-primary btn-full" id="bookNowBtn" onclick="bookCourse(${course.id})">✦ احجزي الآن</button>`;
+    el.innerHTML = `<button class="btn btn-primary btn-full" id="bookNowBtn" onclick="bookCourse(${course.id})">✦ احجز الآن</button>`;
   }
 }
 
@@ -1441,7 +1441,7 @@ async function bookCourse(courseId) {
     navigate('dashboard');
   } catch(err) {
     toast(err.error || 'تعذّر الحجز','error');
-    if (btn) {btn.textContent = '✦ احجزي الآن'; btn.disabled = false;}
+    if (btn) {btn.textContent = '✦ احجز الآن'; btn.disabled = false;}
   }
 }
 
