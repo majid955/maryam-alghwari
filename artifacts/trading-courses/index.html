@@ -1503,8 +1503,8 @@ function scrollToForm() {
   setTimeout(() => document.getElementById('bookingSection').scrollIntoView({behavior:'smooth'}), 100);
 }
 /* ── Contact form ── */
-/* ── Booking form → Google Sheets + email (via Google Apps Script) ── */
-const BOOKING_ENDPOINT = "__BOOKING_ENDPOINT__";
+/* ── Booking form → secure backend (/api) → Google Sheets + email ── */
+const BOOKING_ENDPOINT = "/api/contact";
 const SERVICE_LABELS = {
   'fund-1':'خطة A (1,000$)',
   'fund-2':'خطة B (5,000$)',
@@ -1539,18 +1539,13 @@ async function handleContactForm() {
   const phone = '+968 ' + local;
   const serviceLabel = SERVICE_LABELS[service] || service;
 
-  if (!BOOKING_ENDPOINT || BOOKING_ENDPOINT.indexOf('__') === 0) {
-    toast('لم يتم ربط نموذج الطلبات بعد. يرجى المحاولة لاحقاً أو التواصل عبر واتساب','error');
-    return;
-  }
-
   const orig = btn.textContent;
   btn.disabled = true;
   btn.textContent = 'جارٍ الإرسال...';
   try {
     const res = await fetch(BOOKING_ENDPOINT, {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ name, phone, service: serviceLabel, message })
     });
     const data = await res.json().catch(() => ({ ok: res.ok }));

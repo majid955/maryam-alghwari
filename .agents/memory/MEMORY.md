@@ -1,1 +1,1 @@
-- [Trading-courses booking form flow](booking-form-flow.md) — form POSTs to Google Apps Script (Sheets+email); text/plain avoids CORS preflight; URL injected via server.js env BOOKING_SHEET_URL.
+- [Trading-courses booking form flow](booking-form-flow.md) — browser→/api/contact (Express)→Google Apps Script; Apps Script URL is server-only secret BOOKING_SHEET_URL, never in frontend; Oman phone ^[79]\d{7}$.
