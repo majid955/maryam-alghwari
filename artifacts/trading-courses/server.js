@@ -25,6 +25,19 @@ http.createServer((req, res) => {
     return;
   }
 
+  // Serve static files from public/
+  const safeUrl = req.url.split('?')[0];
+  if (safeUrl !== '/' && !safeUrl.startsWith('/api')) {
+    const filePath = path.join(__dirname, 'public', path.normalize(safeUrl).replace(/^(\.\.[/\\])+/, ''));
+    if (filePath.startsWith(path.join(__dirname, 'public')) && fs.existsSync(filePath) && fs.statSync(filePath).isFile()) {
+      const ext = path.extname(filePath).toLowerCase();
+      const types = { '.png':'image/png', '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.svg':'image/svg+xml', '.webp':'image/webp', '.gif':'image/gif', '.ico':'image/x-icon', '.txt':'text/plain' };
+      res.writeHead(200, { 'Content-Type': types[ext] || 'application/octet-stream', 'Cache-Control': 'public, max-age=3600' });
+      fs.createReadStream(filePath).pipe(res);
+      return;
+    }
+  }
+
   // Serve index.html for everything else
   fs.readFile(HTML, (err, data) => {
     if (err) { res.writeHead(500); res.end('Error'); return; }
